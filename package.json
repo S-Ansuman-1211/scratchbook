@@ -18,7 +18,7 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "bcryptjs": "^2.4.3",
-    "next": "15.1.4",
+    "next": "^15.5.20",
     "next-auth": "^4.24.11",
     "pg-sdk-node": "^2.0.2",
     "react": "^19.0.0",
