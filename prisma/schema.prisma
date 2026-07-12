@@ -1,0 +1,332 @@
+// ScratchBook Publications — Prisma schema
+// Data model derived from: Website Flow 2026, Author Dashboard, and Website.pdf
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────────── Users & Auth ─────────────────────────────
+
+enum Role {
+  CUSTOMER
+  AUTHOR
+  ADMIN
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  mobile       String?
+  passwordHash String
+  role         Role      @default(CUSTOMER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  authorProfile AuthorProfile?
+  orders        Order[]
+  cart          CartItem[]
+  blogComments  BlogComment[]
+}
+
+// Extra profile data for users with role = AUTHOR
+model AuthorProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  penName       String?
+  bio           String?  @db.Text
+  walletBalance Int      @default(0) // stored in paise (INR * 100)
+  totalEarnings Int      @default(0) // paise
+  createdAt     DateTime @default(now())
+
+  books Book[]
+}
+
+// ───────────────────────────── Catalog: Books ─────────────────────────────
+
+enum BookType {
+  ANTHOLOGY
+  SOLO
+  BIOGRAPHY
+  AUTOBIOGRAPHY
+}
+
+enum BookStatus {
+  UPCOMING   // pre-order
+  PUBLISHED  // buy now
+  DRAFT
+}
+
+model Book {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  description String?    @db.Text
+  coverUrl    String?
+  type        BookType   @default(SOLO)
+  status      BookStatus @default(PUBLISHED)
+
+  // Book details (from Author Dashboard -> Book Details)
+  isbn        String?
+  language    String?
+  genre       String?
+  pages       Int?
+  sizeLabel   String? // e.g. "5x8 in"
+
+  // Pricing in paise (INR * 100)
+  paperbackPrice Int? // null => format not available
+  hardcasePrice  Int?
+  ebookPrice     Int?
+  printCost      Int? @default(0) // print cost per book (author copies)
+
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  authorProfileId String?
+  author          AuthorProfile? @relation(fields: [authorProfileId], references: [id])
+
+  orderItems OrderItem[]
+  sales      SaleRecord[]
+}
+
+// Aggregated sales per channel (Sales Insight section of dashboard)
+enum SalesChannel {
+  DIRECT     // Author copies
+  AMAZON
+  BOOKSTORE
+  EBOOK_STORE
+}
+
+model SaleRecord {
+  id          String       @id @default(cuid())
+  bookId      String
+  book        Book         @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  channel     SalesChannel
+  copiesSold  Int          @default(0)
+  profitEarned Int         @default(0) // paise
+  periodMonth DateTime // first day of the month this record covers
+  createdAt   DateTime     @default(now())
+
+  @@index([bookId])
+}
+
+// ───────────────────────────── Services catalog ─────────────────────────────
+// Workshops, Publishing packages, Branding, Promotions, Writing services, etc.
+
+enum ServiceCategory {
+  WORKSHOP
+  PUBLISHING
+  PACKAGE          // SB Basic/Bronze/Silver/Gold/Crystal/Deluxe/Diamond/Platinum/Radium
+  BRANDING
+  DIGITAL_PROMOTION
+  WRITING_SERVICE
+  POST_RELEASE     // the 12 promotion services (giveaway, reviews, etc.)
+  GIFTS
+  PREMIUM          // dashboard premium services
+}
+
+model Service {
+  id          String          @id @default(cuid())
+  name        String
+  slug        String          @unique
+  category    ServiceCategory
+  summary     String?         @db.Text
+  description String?         @db.Text
+  // Some services have tiered/slot-based pricing (e.g. 30/50/100 slots).
+  // Stored as JSON list of { label, price } where price is in paise.
+  priceTiers  Json? // e.g. [{ "label": "30 slots", "price": 200000 }]
+  basePrice   Int? // paise, for single-price services
+  active      Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+}
+
+// ───────────────────────────── Magazines ─────────────────────────────
+
+enum MagazineType {
+  MOVIE
+  PERSONAL
+  GROUP_DIVA
+}
+
+model Magazine {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  type        MagazineType @default(PERSONAL)
+  coverUrl    String?
+  description String?      @db.Text
+  pages       Int          @default(4) // multiples of four
+  gsm         Int          @default(190)
+  pricePerPage Int         @default(800) // Rs.8 = 800 paise
+  pdfUrl      String?
+  readOnline  Boolean      @default(true)
+  edition     String?
+  publishedAt DateTime?
+  createdAt   DateTime     @default(now())
+}
+
+// ───────────────────────────── Blog ─────────────────────────────
+
+model BlogPost {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  excerpt     String?
+  body        String        @db.Text
+  coverUrl    String?
+  published   Boolean       @default(true)
+  likes       Int           @default(0)
+  publishedAt DateTime      @default(now())
+  comments    BlogComment[]
+}
+
+model BlogComment {
+  id        String   @id @default(cuid())
+  postId    String
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  authorName String
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+// ───────────────────────────── Events / Competitions ─────────────────────────────
+
+enum EventType {
+  EVENT
+  COMPETITION
+  COLLABORATION
+  AWARD
+  RECORD
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  type        EventType @default(COMPETITION)
+  description String?   @db.Text
+  bannerUrl   String?
+  startsAt    DateTime?
+  endsAt      DateTime?
+  isOpen      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  participants EventParticipation[]
+}
+
+// A submission when someone clicks "Participate" on an event/competition.
+model EventParticipation {
+  id         String   @id @default(cuid())
+  // eventId is optional because some events are shown from a static fallback
+  // list (not yet stored in the DB); eventTitle always captures the entry.
+  eventId    String?
+  event      Event?   @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  eventTitle String
+  name       String
+  email      String
+  phone      String?
+  category   String?  // e.g. Photography / Poetry — the contest category
+  message    String?  @db.Text
+  entryUrl   String?  // optional link to the submitted work (Drive/portfolio)
+  createdAt  DateTime @default(now())
+
+  @@index([eventId])
+}
+
+// ───────────────────────────── Cart, Orders & Payments ─────────────────────────────
+
+enum CartItemKind {
+  BOOK
+  SERVICE
+  MAGAZINE
+}
+
+model CartItem {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      CartItemKind
+  refId     String // id of the Book / Service / Magazine
+  title     String
+  unitPrice Int // paise
+  quantity  Int          @default(1)
+  meta      Json? // e.g. { format: "paperback", tier: "30 slots" }
+  createdAt DateTime     @default(now())
+
+  @@index([userId])
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  FULFILLED
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  status          OrderStatus @default(PENDING)
+  totalAmount     Int // paise
+  currency        String      @default("INR")
+
+  // PhonePe references
+  // merchantOrderId is the id WE send to PhonePe (we use this Order's own id).
+  // phonepeOrderId is the order id PhonePe returns; phonepeState mirrors PhonePe's state.
+  merchantOrderId String? @unique
+  phonepeOrderId  String?
+  phonepeState    String? // PENDING | COMPLETED | FAILED (from PhonePe)
+
+  shippingName    String?
+  shippingPhone   String?
+  shippingAddress String? @db.Text
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  items     OrderItem[]
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        String       @id @default(cuid())
+  orderId   String
+  order     Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  kind      CartItemKind
+  refId     String
+  bookId    String?
+  book      Book?        @relation(fields: [bookId], references: [id])
+  title     String
+  unitPrice Int
+  quantity  Int          @default(1)
+  meta      Json?
+
+  @@index([orderId])
+}
+
+// ───────────────────────────── Contact / Newsletter ─────────────────────────────
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

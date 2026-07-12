@@ -1,0 +1,51 @@
+import { prisma } from "@/lib/prisma";
+import ParticipateForm from "@/components/ParticipateForm";
+
+export const metadata = { title: "Events & Competitions | ScratchBook Publications" };
+
+type EventCard = { id?: string; title: string; type: string; description: string | null };
+
+const FALLBACK: EventCard[] = [
+  { title: "Photography Contest", type: "COMPETITION", description: "Capture a story in a single frame. Open to all skill levels." },
+  { title: "Painting Contest", type: "COMPETITION", description: "Any medium, any theme — show us your imagination on canvas." },
+  { title: "Poetry Contest", type: "COMPETITION", description: "Free verse or form — submit an original poem and get published." },
+  { title: "Illustration Contest", type: "COMPETITION", description: "Illustrate a prompt and win a spot in our next anthology." },
+  { title: "Story Contest", type: "COMPETITION", description: "A short story under 2000 words. Best entries get a book deal." },
+];
+
+export default async function EventsPage() {
+  const events = await prisma.event
+    .findMany({ orderBy: { createdAt: "desc" } })
+    .catch(() => []);
+
+  const list: EventCard[] =
+    events.length > 0
+      ? events.map((e) => ({ id: e.id, title: e.title, type: e.type, description: e.description }))
+      : FALLBACK;
+
+  return (
+    <div className="container-x py-16">
+      <span className="eyebrow">Showcase your talent</span>
+      <h1 className="mt-2 font-serif text-4xl font-bold text-ink">
+        Events, Competitions &amp; Collaborations
+      </h1>
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink/60">
+        Events, competitions, collaborations, awards and records — opportunities to win and be
+        recognised. Pick one below and register in seconds.
+      </p>
+
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((e, i) => (
+          <div key={e.id ?? i} className="card flex flex-col">
+            <span className="badge">{e.type}</span>
+            <h2 className="mt-3 font-serif text-lg font-bold text-ink">{e.title}</h2>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/60">
+              {e.description ?? "Open for submissions. Details to be announced."}
+            </p>
+            <ParticipateForm event={{ id: e.id, title: e.title, type: e.type }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

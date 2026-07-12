@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f8f8fb;
+  --foreground: #16151d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer base {
+  h1, h2, h3 {
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  /* Primary CTA — indigo with subtle depth and lift on hover */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_16px_-6px_rgba(79,70,229,0.6)] transition-all hover:bg-brand-dark hover:shadow-[0_10px_22px_-6px_rgba(79,70,229,0.7)] active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink/80 transition-all hover:border-brand hover:text-brand hover:shadow-soft active:scale-[0.98];
+  }
+  /* Dark CTA for use on light hero */
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-ink-soft active:scale-[0.98];
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-white p-5 shadow-soft;
+  }
+  /* Small uppercase section label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand;
+  }
+  /* Neutral pill / tag */
+  .badge {
+    @apply inline-block rounded-full border border-line bg-cream px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-ink/55;
+  }
+  .label {
+    @apply mb-1 block text-sm font-medium text-ink/80;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-4 focus:ring-brand/10;
+  }
+}
