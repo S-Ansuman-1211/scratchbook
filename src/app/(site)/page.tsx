@@ -27,9 +27,10 @@ export default async function HomePage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-paper">
-        {/* soft decorative glow */}
-        <div className="pointer-events-none absolute -right-32 -top-24 h-96 w-96 rounded-full bg-brand/15 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 left-1/4 h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
+        {/* soft decorative glows — indigo, purple & orange */}
+        <div className="pointer-events-none absolute -right-32 -top-24 h-96 w-96 rounded-full bg-purple/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 left-1/4 h-72 w-72 rounded-full bg-orange/15 blur-3xl" />
+        <div className="pointer-events-none absolute right-1/3 top-1/2 h-72 w-72 rounded-full bg-brand/15 blur-3xl" />
 
         <div className="container-x relative grid items-center gap-12 py-16 md:grid-cols-[1.05fr_0.95fr] md:py-24">
           <div className="flex flex-col justify-center">
@@ -39,7 +40,9 @@ export default async function HomePage() {
             </span>
             <h1 className="mt-5 font-serif text-5xl font-semibold leading-[1.05] text-ink md:text-6xl">
               Turn your manuscript into a{" "}
-              <span className="italic text-brand">best-seller.</span>
+              <span className="bg-gradient-to-r from-purple via-brand to-orange bg-clip-text italic text-transparent">
+                best-seller.
+              </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/65">
               Mentorship, publishing, branding and promotions — everything an author needs, in one
@@ -108,17 +111,17 @@ export default async function HomePage() {
       <section className="container-x py-16">
         <div className="grid gap-4 md:grid-cols-4">
           {[
-            { t: "Books", d: "Buy & pre-order", href: "/books", emoji: "📚" },
-            { t: "Services", d: "Publish & promote", href: "/services", emoji: "🚀" },
-            { t: "Magazine", d: "Read editions", href: "/magazine", emoji: "📰" },
-            { t: "Events", d: "Contests & awards", href: "/events", emoji: "🏆" },
+            { t: "Books", d: "Buy & pre-order", href: "/books", emoji: "📚", tint: "bg-brand-tint" },
+            { t: "Services", d: "Publish & promote", href: "/services", emoji: "🚀", tint: "bg-purple-tint" },
+            { t: "Magazine", d: "Read editions", href: "/magazine", emoji: "📰", tint: "bg-orange-tint" },
+            { t: "Events", d: "Contests & awards", href: "/events", emoji: "🏆", tint: "bg-gold/15" },
           ].map((c) => (
             <Link
               key={c.t}
               href={c.href}
               className="group card flex items-center gap-4 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift"
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-tint text-2xl">
+              <span className={`flex h-12 w-12 items-center justify-center rounded-xl ${c.tint} text-2xl`}>
                 {c.emoji}
               </span>
               <div>
@@ -160,12 +163,12 @@ export default async function HomePage() {
         </div>
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {[
-            { t: "Mentorship", d: "Personal mentorship for solo books and anthologies — learn the craft from professionals.", n: "01" },
-            { t: "Publishing", d: "Editing, proofreading, cover design, listing and distribution — end to end.", n: "02" },
-            { t: "Branding & Promotion", d: "Build a personal brand, run digital promotions, reach readers of your niche.", n: "03" },
+            { t: "Mentorship", d: "Personal mentorship for solo books and anthologies — learn the craft from professionals.", n: "01", color: "text-brand" },
+            { t: "Publishing", d: "Editing, proofreading, cover design, listing and distribution — end to end.", n: "02", color: "text-purple" },
+            { t: "Branding & Promotion", d: "Build a personal brand, run digital promotions, reach readers of your niche.", n: "03", color: "text-orange" },
           ].map((c) => (
             <div key={c.t} className="card transition-all hover:-translate-y-1 hover:shadow-lift">
-              <span className="font-serif text-3xl font-bold text-brand/25">{c.n}</span>
+              <span className={`font-serif text-3xl font-bold ${c.color}`}>{c.n}</span>
               <h3 className="mt-3 font-serif text-xl font-bold text-ink">{c.t}</h3>
               <p className="mt-2 text-sm leading-relaxed text-ink/65">{c.d}</p>
             </div>
@@ -201,7 +204,8 @@ export default async function HomePage() {
       {/* Events CTA */}
       <section className="container-x py-16">
         <div className="relative overflow-hidden rounded-2xl bg-ink p-10 text-white md:p-14">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand/30 blur-3xl" />
+          <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-purple/40 blur-3xl" />
+          <div className="pointer-events-none absolute -left-10 bottom-0 h-56 w-56 rounded-full bg-orange/25 blur-3xl" />
           <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div>
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-light">

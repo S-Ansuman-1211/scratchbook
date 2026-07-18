@@ -24,6 +24,17 @@ const config: Config = {
           DEFAULT: "#d97706", // amber-600 — prices, star ratings
           light: "#f59e0b",
         },
+        // Secondary accents — used sparingly for warmth and variety.
+        purple: {
+          DEFAULT: "#7c3aed",
+          dark: "#6d28d9",
+          tint: "#f3e8ff",
+        },
+        orange: {
+          DEFAULT: "#ea580c",
+          dark: "#c2410c",
+          tint: "#ffedd5",
+        },
         cream: "#f3f3f8", // cool paper for alternating sections
         paper: "#f8f8fb", // page background
         line: "#e8e7f0", // hairline borders
