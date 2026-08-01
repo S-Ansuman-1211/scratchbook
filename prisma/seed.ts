@@ -56,18 +56,48 @@ async function main() {
 
   const profileId = author.authorProfile!.id;
 
-  // Books
+  // Remove earlier placeholder demo books (safe: they were never ordered).
+  await prisma.book.deleteMany({
+    where: { slug: { in: ["whispers-of-the-monsoon", "voices-unbound", "the-lighthouse-keeper", "a-life-in-ink"] } },
+  }).catch(() => {});
+
+  // Real ScratchBook-published books (covers imported into /public/covers).
+  // NOTE: prices are placeholders (MRP not provided) — client to confirm.
   const books = [
-    { title: "Whispers of the Monsoon", slug: "whispers-of-the-monsoon", type: "SOLO", status: "PUBLISHED", genre: "Literary Fiction", language: "English", pages: 248, isbn: "978-93-5000-001-1", sizeLabel: "5x8 in", paperbackPrice: 29900, ebookPrice: 14900, printCost: 12000 },
-    { title: "Voices Unbound (Anthology)", slug: "voices-unbound", type: "ANTHOLOGY", status: "PUBLISHED", genre: "Poetry", language: "English", pages: 180, isbn: "978-93-5000-002-8", sizeLabel: "5x8 in", paperbackPrice: 24900, ebookPrice: 9900, printCost: 10000 },
-    { title: "The Lighthouse Keeper", slug: "the-lighthouse-keeper", type: "SOLO", status: "UPCOMING", genre: "Mystery", language: "English", pages: 320, sizeLabel: "5.5x8.5 in", paperbackPrice: 34900, ebookPrice: 17900, printCost: 14000 },
-    { title: "A Life in Ink", slug: "a-life-in-ink", type: "AUTOBIOGRAPHY", status: "PUBLISHED", genre: "Memoir", language: "English", pages: 290, isbn: "978-93-5000-003-5", sizeLabel: "6x9 in", paperbackPrice: 39900, ebookPrice: 19900, printCost: 15000 },
+    { title: "Jayamma Panchayati", slug: "jayamma-panchayati", authorName: "Sai Bharath Manku", type: "SOLO", status: "PUBLISHED", genre: "Cinema / Memoir", language: "Telugu", coverUrl: "/covers/jayamma-panchayati.jpg", paperbackPrice: 29900, ebookPrice: 14900 },
+    { title: "The Criminal", slug: "the-criminal", authorName: "Atharva Deshpande", type: "SOLO", status: "PUBLISHED", genre: "Thriller", language: "English", coverUrl: "/covers/the-criminal.jpg", paperbackPrice: 27900, ebookPrice: 12900 },
+    { title: "Espoir", slug: "espoir", authorName: "Shreya Rathi", type: "SOLO", status: "PUBLISHED", genre: "Poetry", language: "English", coverUrl: "/covers/espoir.jpg", paperbackPrice: 24900, ebookPrice: 9900 },
+    { title: "How does he Look?", slug: "how-does-he-look", authorName: "Sravani Dabilpura", type: "SOLO", status: "PUBLISHED", genre: "Fiction", language: "English", coverUrl: "/covers/how-does-he-look.jpg", paperbackPrice: 26900, ebookPrice: 11900 },
+    { title: "Nene Rajithe", slug: "nene-rajithe", authorName: "Ramesh Devendla", type: "SOLO", status: "PUBLISHED", genre: "Fiction", language: "Telugu", coverUrl: "/covers/nene-rajithe.jpg", paperbackPrice: 29900, ebookPrice: 14900 },
+    { title: "Zinda Rehti Hai Humesha Mohabbatein", slug: "zinda-rehti-hai", authorName: "Gurleen Kaur", type: "SOLO", status: "PUBLISHED", genre: "Romance", language: "Hindi", coverUrl: "/covers/zinda-rehti-hai.png", paperbackPrice: 27900, ebookPrice: 12900 },
+    { title: "From Idly Seller to Startup Founder", slug: "idly-seller-to-startup-founder", authorName: "Palla Ganesh", type: "BIOGRAPHY", status: "PUBLISHED", genre: "Biography", language: "English", coverUrl: "/covers/idly-seller-to-startup-founder.jpg", paperbackPrice: 34900, ebookPrice: 17900 },
+    { title: "RGV Virus", slug: "rgv-virus", authorName: "Mahesh Uppada", type: "SOLO", status: "PUBLISHED", genre: "Fiction", language: "Telugu", coverUrl: "/covers/rgv-virus.jpeg", paperbackPrice: 27900, ebookPrice: 12900 },
+    { title: "Ninnu Chere Payanam", slug: "ninnu-chere-payanam", authorName: "Nagendra D Babu", type: "SOLO", status: "PUBLISHED", genre: "Fiction", language: "Telugu", coverUrl: "/covers/ninnu-chere-payanam.png", paperbackPrice: 26900, ebookPrice: 11900 },
+    { title: "Navyanjali", slug: "navyanjali", authorName: "Tatapudi Raveendranath Tagore", type: "SOLO", status: "PUBLISHED", genre: "Poetry", language: "Telugu", coverUrl: "/covers/navyanjali.jpg", paperbackPrice: 24900, ebookPrice: 9900 },
+    { title: "Naa Quora Rathalu", slug: "naa-quora-rathalu", authorName: "GLN Prasad", type: "SOLO", status: "PUBLISHED", genre: "Essays", language: "Telugu", coverUrl: "/covers/naa-quora-rathalu.jpg", paperbackPrice: 24900, ebookPrice: 9900 },
+    { title: "Rasaleela", slug: "rasaleela", authorName: "Bhagya Vempati", type: "SOLO", status: "PUBLISHED", genre: "Romance", language: "English", coverUrl: "/covers/rasaleela.jpg", paperbackPrice: 27900, ebookPrice: 12900 },
+    { title: "Tea Time Kathalu", slug: "tea-time-kathalu", authorName: "GLN Prasad", type: "SOLO", status: "PUBLISHED", genre: "Short Stories", language: "Telugu", coverUrl: "/covers/tea-time-kathalu.jpg", paperbackPrice: 24900, ebookPrice: 9900 },
+    { title: "Flavours of Love", slug: "flavours-of-love", authorName: "Jwalapuram Srihari", type: "SOLO", status: "PUBLISHED", genre: "Romance", language: "English", coverUrl: "/covers/flavours-of-love.jpg", paperbackPrice: 26900, ebookPrice: 11900 },
+    { title: "Anubhutiyon ka Sargam", slug: "anubhutiyon-ka-sargam", authorName: "ScratchBook Anthology", type: "ANTHOLOGY", status: "PUBLISHED", genre: "Poetry", language: "Hindi", coverUrl: "/covers/anubhutiyon-ka-sargam.webp", paperbackPrice: 24900, ebookPrice: 9900 },
+    { title: "Madilo Maatalu", slug: "madilo-maatalu", authorName: "ScratchBook Anthology", type: "ANTHOLOGY", status: "PUBLISHED", genre: "Anthology", language: "Telugu", coverUrl: "/covers/madilo-maatalu.jpeg", paperbackPrice: 24900, ebookPrice: 9900 },
+    { title: "RPM", slug: "rpm", authorName: "Vihang", type: "SOLO", status: "UPCOMING", genre: "Thriller", language: "Telugu", coverUrl: "/covers/rpm.jpg", paperbackPrice: 29900, ebookPrice: 14900 },
+    { title: "Antarangam", slug: "antarangam", authorName: "ScratchBook Author", type: "SOLO", status: "UPCOMING", genre: "Fiction", language: "Telugu", coverUrl: "/covers/antarangam.jpg", paperbackPrice: 27900, ebookPrice: 12900 },
+    { title: "Sivoham", slug: "sivoham", authorName: "ScratchBook Author", type: "SOLO", status: "PUBLISHED", genre: "Devotional", language: "Telugu", coverUrl: "/covers/sivoham.jpg", paperbackPrice: 26900, ebookPrice: 11900 },
+    { title: "Vekuva", slug: "vekuva", authorName: "ScratchBook Author", type: "SOLO", status: "PUBLISHED", genre: "Poetry", language: "Telugu", coverUrl: "/covers/vekuva.jpg", paperbackPrice: 24900, ebookPrice: 9900 },
   ] as const;
 
   for (const b of books) {
     const book = await prisma.book.upsert({
       where: { slug: b.slug },
-      update: {},
+      update: {
+        authorName: b.authorName,
+        coverUrl: b.coverUrl,
+        status: b.status,
+        genre: b.genre,
+        language: b.language,
+        paperbackPrice: b.paperbackPrice,
+        ebookPrice: b.ebookPrice,
+      },
       create: {
         ...b,
         publishedAt: b.status === "PUBLISHED" ? new Date() : null,

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -9,6 +10,7 @@ const NAV = [
   { href: "/services", label: "Services" },
   { href: "/blog", label: "Blog" },
   { href: "/magazine", label: "Magazine" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/events", label: "Events" },
   { href: "/about", label: "About Us" },
   { href: "/contact", label: "Contact" },
@@ -21,11 +23,9 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/80 backdrop-blur-md">
       <nav className="container-x flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-serif text-xl font-bold text-ink">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-sm font-black text-white">
-            S
-          </span>
-          Scratch<span className="-ml-1.5 text-brand">Book</span>
+        <Link href="/" className="flex items-center gap-2.5 font-serif text-xl font-bold text-ink">
+          <Image src="/brand/sbp-logo.png" alt="ScratchBook Publications" width={40} height={40} className="h-10 w-auto" priority />
+          <span>Scratch<span className="text-brand">Book</span></span>
         </Link>
 
         <ul className="hidden items-center gap-7 md:flex">

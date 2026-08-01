@@ -23,7 +23,7 @@ export default async function BookDetailPage({ params }: { params: Promise<{ slu
   if (!book) notFound();
 
   const isUpcoming = book.status === "UPCOMING";
-  const authorName = book.author?.penName ?? "ScratchBook Author";
+  const authorName = book.authorName ?? book.author?.penName ?? "ScratchBook Author";
 
   // A few more titles to show underneath.
   const related = await prisma.book

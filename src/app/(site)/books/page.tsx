@@ -34,7 +34,7 @@ export default async function BooksPage() {
             return (
               <div key={b.id} className="group flex flex-col">
                 <Link href={`/books/${b.slug}`} className="relative">
-                  <BookCover title={b.title} coverUrl={b.coverUrl} className="transition-all group-hover:-translate-y-1.5 group-hover:shadow-lift" />
+                  <BookCover title={b.title} author={b.authorName} coverUrl={b.coverUrl} className="transition-all group-hover:-translate-y-1.5 group-hover:shadow-lift" />
                   {isUpcoming && (
                     <span className="absolute left-2 top-2 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow">
                       Pre-order
@@ -43,9 +43,11 @@ export default async function BooksPage() {
                 </Link>
                 <div className="mt-3 flex items-center gap-2">
                   <span className="badge">{b.type}</span>
+                  {b.language && <span className="text-[11px] text-ink/40">{b.language}</span>}
                 </div>
                 <h3 className="mt-1.5 font-serif font-semibold text-ink line-clamp-1">{b.title}</h3>
-                <p className="text-sm font-bold text-gold">{formatINR(price)}</p>
+                {b.authorName && <p className="text-xs text-ink/50">by {b.authorName}</p>}
+                <p className="mt-0.5 text-sm font-bold text-gold">{formatINR(price)}</p>
                 <div className="mt-auto pt-3">
                   <AddToCart
                     kind="BOOK"

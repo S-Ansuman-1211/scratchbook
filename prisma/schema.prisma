@@ -67,6 +67,7 @@ model Book {
   id          String     @id @default(cuid())
   title       String
   slug        String     @unique
+  authorName  String? // display author (real book author, may differ from platform account)
   description String?    @db.Text
   coverUrl    String?
   type        BookType   @default(SOLO)

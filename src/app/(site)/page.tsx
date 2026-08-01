@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/money";
 import BookCover from "@/components/BookCover";
 import AddToCart from "@/components/AddToCart";
+import LaunchCard from "@/components/LaunchCard";
+import { LAUNCHES } from "@/data/launches";
 
 // Home page — premium e-commerce storefront for ScratchBook Publications.
 export default async function HomePage() {
@@ -176,6 +178,77 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Gallery — celebrity-led book launches */}
+      <section className="container-x py-16">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <span className="eyebrow">Moments &amp; milestones</span>
+            <h2 className="mt-2 font-serif text-3xl font-semibold text-ink">Celebrity-led Book Launches</h2>
+            <p className="mt-2 max-w-xl text-sm text-ink/60">Book launches, fairs and events — from Hyderabad to Doha.</p>
+          </div>
+          <Link href="/gallery" className="hidden text-sm font-semibold text-brand hover:text-brand-dark sm:block">
+            View gallery →
+          </Link>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {LAUNCHES.slice(0, 6).map((l) => (
+            <LaunchCard key={l.title} launch={l} />
+          ))}
+        </div>
+        <div className="mt-8 text-center sm:hidden">
+          <Link href="/gallery" className="btn-outline px-6 py-2.5">View full gallery</Link>
+        </div>
+      </section>
+
+      {/* Extended Services — 360° creative platform */}
+      <section className="border-y border-line bg-ink py-16 text-white">
+        <div className="container-x">
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-light">Beyond publishing</span>
+            <h2 className="mt-3 font-serif text-3xl font-semibold md:text-4xl">Our Extended Services</h2>
+            <p className="mt-3 text-white/65">
+              ScratchBook is not just a publishing house — it&apos;s a{" "}
+              <span className="font-semibold text-white">360° creative platform</span>. In partnership
+              with{" "}
+              <Link href="/daa-magazine" className="font-semibold underline decoration-dotted underline-offset-2" style={{ color: "#c4b5fd" }}>DAA</Link>{" "}
+              and <span style={{ color: "#fdba74" }}>Pixcorto</span>.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {[
+              { t: "DAA Magazine", d: "Digital & event partnership for magazines; author interviews as part of the magazine.", emoji: "📖", ring: "hover:border-purple/60", href: "/daa-magazine" },
+              { t: "Pixcorto Collaborations", d: "Script development and movie promotions with our production partner.", emoji: "🎬", ring: "hover:border-orange/60" },
+              { t: "YouTube / Shorts Promotions", d: "Reels, trailers, interviews and podcasts to grow your reach.", emoji: "▶️", ring: "hover:border-brand/60" },
+              { t: "Celebrity-led Events", d: "Celebrity book launches and cover-reveal event coordination.", emoji: "🎤", ring: "hover:border-gold/60", href: "/gallery" },
+              { t: "Mentoring & Upskilling", d: "Author career roadmap sessions and workshops.", emoji: "🧭", ring: "hover:border-purple/60" },
+              { t: "Add-on Services", d: "Editing, page design, ghostwriting (white-label), book-to-script & script-to-book.", emoji: "✨", ring: "hover:border-orange/60" },
+            ].map((s) => {
+              const inner = (
+                <>
+                  <span className="text-2xl">{s.emoji}</span>
+                  <h3 className="mt-3 font-serif text-lg font-bold">
+                    {s.t}
+                    {s.href && <span className="ml-1 text-white/40">→</span>}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/60">{s.d}</p>
+                </>
+              );
+              const cls = `block rounded-2xl border border-white/10 bg-white/5 p-5 transition-all hover:-translate-y-1 ${s.ring}`;
+              return s.href ? (
+                <Link key={s.t} href={s.href} className={cls}>{inner}</Link>
+              ) : (
+                <div key={s.t} className={cls}>{inner}</div>
+              );
+            })}
+          </div>
+
+          <div className="mt-8">
+            <Link href="/services" className="btn-primary px-7 py-3">Explore all services</Link>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="border-y border-line bg-cream py-16">
         <div className="container-x">
@@ -237,7 +310,7 @@ function BookRow({
 }: {
   title: string;
   subtitle: string;
-  books: { id: string; title: string; slug: string; coverUrl: string | null; paperbackPrice: number | null; ebookPrice: number | null }[];
+  books: { id: string; title: string; slug: string; authorName: string | null; coverUrl: string | null; paperbackPrice: number | null; ebookPrice: number | null }[];
   emptyText: string;
   cta: "buy" | "preorder";
   muted?: boolean;
@@ -266,10 +339,11 @@ function BookRow({
               return (
                 <div key={b.id} className="group flex flex-col">
                   <Link href={`/books/${b.slug}`}>
-                    <BookCover title={b.title} coverUrl={b.coverUrl} className="transition-all group-hover:-translate-y-1.5 group-hover:shadow-lift" />
+                    <BookCover title={b.title} author={b.authorName} coverUrl={b.coverUrl} className="transition-all group-hover:-translate-y-1.5 group-hover:shadow-lift" />
                   </Link>
                   <h3 className="mt-3 font-serif font-semibold text-ink line-clamp-1">{b.title}</h3>
-                  <p className="text-sm font-bold text-gold">{formatINR(price)}</p>
+                  {b.authorName && <p className="text-xs text-ink/50">by {b.authorName}</p>}
+                  <p className="mt-0.5 text-sm font-bold text-gold">{formatINR(price)}</p>
                   <div className="mt-auto pt-3">
                     <AddToCart
                       kind="BOOK"

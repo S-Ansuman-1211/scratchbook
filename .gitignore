@@ -10,3 +10,7 @@ npm-debug.log*
 .vercel
 next-env.d.ts
 prisma/dev.db
+
+# Raw client source material (PDFs, original hi-res images) — not used at
+# runtime; the app uses the optimized copies under public/. Kept local only.
+client data provided/
