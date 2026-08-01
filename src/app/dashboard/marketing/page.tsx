@@ -21,7 +21,7 @@ export default function MarketingPage() {
         <h1 className="font-serif text-2xl font-bold">Marketing Tools</h1>
         <p className="text-sm text-ink/60">
           A toolkit of 12 customisable post-release promotions. Configure slots and budgets, then
-          check out via PhonePe.
+          check out via Razorpay.
         </p>
       </div>
 

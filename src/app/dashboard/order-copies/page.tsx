@@ -54,7 +54,7 @@ export default function OrderCopiesPage() {
 
         <button className="btn-primary w-full">Proceed to Payment</button>
         <p className="text-center text-xs text-ink/50">
-          Checkout uses PhonePe. Print cost &amp; shipping are configured per book/region.
+          Checkout uses Razorpay. Print cost &amp; shipping are configured per book/region.
         </p>
       </div>
     </div>

@@ -2,39 +2,65 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getPhonePeClient, isPhonePeConfigured } from "@/lib/phonepe";
-import { StandardCheckoutPayRequest } from "pg-sdk-node";
+import { razorpay, isRazorpayConfigured } from "@/lib/razorpay";
+import { z } from "zod";
 
-// Creates a pending Order from the signed-in user's cart, then asks PhonePe for a
-// hosted checkout URL. The client redirects the buyer to `redirectUrl`.
-export async function POST() {
+// Delivery details collected on the cart page before payment.
+const schema = z.object({
+  shippingName: z.string().min(2, "Please enter the delivery name"),
+  shippingPhone: z.string().min(7, "Please enter a valid phone number"),
+  shippingAddress: z.string().min(10, "Please enter the full delivery address"),
+});
+
+// Creates a Razorpay order from the signed-in user's cart, and a matching
+// pending Order in our DB. Returns the data the client needs to open Checkout.
+export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
+
+  const parsed = schema.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.issues[0]?.message ?? "Please fill in your delivery details" },
+      { status: 400 }
+    );
+  }
+  const { shippingName, shippingPhone, shippingAddress } = parsed.data;
 
   const cart = await prisma.cartItem.findMany({ where: { userId: session.user.id } });
   if (cart.length === 0) {
     return NextResponse.json({ error: "Your cart is empty" }, { status: 400 });
   }
 
-  if (!isPhonePeConfigured()) {
+  if (!isRazorpayConfigured()) {
     return NextResponse.json(
-      { error: "Payment gateway not configured. Add PhonePe credentials to .env." },
+      { error: "Payment gateway not configured. Add Razorpay keys to .env." },
       { status: 503 }
     );
   }
 
   const totalAmount = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
 
-  // Persist a pending order with its items snapshot. We use this order's own id as
-  // the merchantOrderId that PhonePe echoes back to us.
+  // Create the Razorpay order (amount in paise).
+  const rzpOrder = await razorpay.orders.create({
+    amount: totalAmount,
+    currency: "INR",
+    receipt: `rcpt_${Date.now()}`,
+  });
+
+  // Persist a pending order with its items snapshot and delivery details.
   const order = await prisma.order.create({
     data: {
       userId: session.user.id,
       status: "PENDING",
       totalAmount,
       currency: "INR",
+      razorpayOrderId: rzpOrder.id,
+      shippingName,
+      shippingPhone,
+      shippingAddress,
       items: {
         create: cart.map((c) => ({
           kind: c.kind,
@@ -49,39 +75,16 @@ export async function POST() {
     },
   });
 
-  await prisma.order.update({
-    where: { id: order.id },
-    data: { merchantOrderId: order.id },
+  return NextResponse.json({
+    orderId: order.id,
+    razorpayOrderId: rzpOrder.id,
+    amount: totalAmount,
+    currency: "INR",
+    keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    customer: {
+      name: shippingName,
+      email: session.user.email,
+      contact: shippingPhone,
+    },
   });
-
-  const baseUrl = process.env.APP_BASE_URL ?? process.env.NEXTAUTH_URL ?? "http://localhost:3000";
-  const redirectUrl = `${baseUrl}/payment-status?orderId=${order.id}`;
-
-  try {
-    const client = getPhonePeClient();
-    const payRequest = StandardCheckoutPayRequest.builder()
-      .merchantOrderId(order.id)
-      .amount(totalAmount) // amount in paise
-      .redirectUrl(redirectUrl)
-      .build();
-
-    const response = await client.pay(payRequest);
-
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { phonepeOrderId: response.orderId ?? null, phonepeState: "PENDING" },
-    });
-
-    return NextResponse.json({
-      orderId: order.id,
-      redirectUrl: response.redirectUrl, // PhonePe-hosted checkout page
-    });
-  } catch (err) {
-    console.error("PhonePe pay error:", err);
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { status: "FAILED", phonepeState: "FAILED" },
-    }).catch(() => {});
-    return NextResponse.json({ error: "Could not start payment. Please try again." }, { status: 502 });
-  }
 }

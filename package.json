@@ -20,7 +20,7 @@
     "bcryptjs": "^2.4.3",
     "next": "^15.5.20",
     "next-auth": "^4.24.11",
-    "pg-sdk-node": "^2.0.2",
+    "razorpay": "^2.9.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "zod": "^3.24.1"

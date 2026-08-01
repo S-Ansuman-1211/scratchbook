@@ -1,7 +1,6 @@
 // Celebrity-led book launches & events (from ScratchBook portfolio).
-// `cover` points to an imported book cover where available; entries without one
-// render a styled placeholder tile. Real event photos can be dropped into
-// /public/gallery and referenced via `photo` later.
+// Real event photos (extracted from the DAA portfolio) live in /public/gallery;
+// where no photo is available yet we fall back to the book cover.
 
 export type Launch = {
   title: string;
@@ -11,13 +10,17 @@ export type Launch = {
 };
 
 export const LAUNCHES: Launch[] = [
-  { title: "Jayamma Panchayati", by: "Launched by Actress & Anchor Suma Kanakala", cover: "/covers/jayamma-panchayati.jpg", tag: "CELEBRITY LAUNCH" },
+  // Real event photographs from the launches
+  { title: "Jayamma Panchayati", by: "Launched by Actress & Anchor Suma Kanakala", cover: "/gallery/launch-panchayati.jpg", tag: "CELEBRITY LAUNCH" },
+  { title: "D'Artiste Artifex Magazine", by: "Magazine launch on stage with the cast & celebrities", cover: "/gallery/launch-stage.jpg", tag: "CELEBRITY LAUNCH" },
+  { title: "Young Era of Film Making", by: "DAA magazine unveiling by the team & authors", cover: "/gallery/launch-crowd.jpg", tag: "EVENT" },
+  { title: "Magazine Launch Moments", by: "Behind the scenes at a D'Artiste Artifex launch", cover: "/gallery/launch-van.jpg", tag: "EVENT" },
+
+  // Book launches (illustrated with the book cover)
   { title: "From Idly Seller to Startup Founder", by: "Launched by Actor Nagababu", cover: "/covers/idly-seller-to-startup-founder.jpg", tag: "CELEBRITY LAUNCH" },
   { title: "Nene Rajithe", by: "Launched by Actor Naresh & Director Karuna Kumar", cover: "/covers/nene-rajithe.jpg", tag: "CELEBRITY LAUNCH" },
-  { title: "DAA Magazine", by: "Launched by Actress Hebah Patel", tag: "CELEBRITY LAUNCH" },
   { title: "Anubhutiyon ka Sargam", by: "Grand launch at Maharashtra", cover: "/covers/anubhutiyon-ka-sargam.webp", tag: "BOOK LAUNCH" },
-  { title: "Geeta Sarla Kabita", by: "Book launch at Doha, Qatar", tag: "BOOK LAUNCH" },
   { title: "RGV Virus", by: "Book launch at Hyderabad", cover: "/covers/rgv-virus.jpeg", tag: "BOOK LAUNCH" },
-  { title: "The Last Roar", by: "Book launch at Hyderabad", tag: "BOOK LAUNCH" },
+  { title: "Geeta Sarla Kabita", by: "Book launch at Doha, Qatar", cover: "/covers/geeta-sarla-kabita.jpg", tag: "BOOK LAUNCH" },
   { title: "Naa Quora Rathalu", by: "Presented to Add. SP Mallikarjun Varma", cover: "/covers/naa-quora-rathalu.jpg", tag: "EVENT" },
 ];

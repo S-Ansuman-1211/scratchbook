@@ -30,17 +30,35 @@ export default function ContactPage() {
   return (
     <div className="container-x grid max-w-5xl gap-12 py-16 md:grid-cols-2">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-wider text-gold">Get in touch</p>
-        <h1 className="mt-2 font-serif text-4xl font-bold">Contact Us</h1>
+        <span className="eyebrow">Get in touch</span>
+        <h1 className="mt-2 font-serif text-4xl font-semibold text-ink md:text-5xl">Contact Us</h1>
         <p className="mt-4 text-ink/70">
           Have a manuscript, an idea, or a question about our services? Connect with us and our
           team will guide you through the garden of opportunities.
         </p>
-        <ul className="mt-8 space-y-3 text-sm text-ink/70">
-          <li><strong className="text-ink">Publication:</strong> ScratchBook Publications</li>
-          <li><strong className="text-ink">Parent unit:</strong> Inkzoid Publication</li>
-          <li className="text-ink/50">Email &amp; phone to be provided by client.</li>
+        <ul className="mt-8 space-y-4 text-sm text-ink/75">
+          <li className="flex gap-3">
+            <span>✉️</span>
+            <a href="mailto:scratchbookpublications@gmail.com" className="font-medium text-brand hover:underline">scratchbookpublications@gmail.com</a>
+          </li>
+          <li className="flex gap-3">
+            <span>📱</span>
+            <a href="tel:+918847816635" className="font-medium text-ink hover:text-brand">+91 88478 16635</a>
+            <span className="text-ink/40">(Call / WhatsApp)</span>
+          </li>
+          <li className="flex gap-3">
+            <span>📸</span>
+            <a href="https://www.instagram.com/scratchbook.publication__/" target="_blank" rel="noreferrer" className="font-medium text-brand hover:underline">@scratchbook.publication__</a>
+          </li>
+          <li className="flex gap-3">
+            <span>📍</span>
+            <span className="text-ink/70">
+              Flat No. 301, 3rd Floor, S Cube Apartments, 9th Phase, KPHB – Gokul Flats,
+              Hyderabad, Telangana 500085
+            </span>
+          </li>
         </ul>
+        <p className="mt-6 text-xs text-ink/45">An independent unit under Inkzoid Publication.</p>
       </div>
 
       <div className="card">

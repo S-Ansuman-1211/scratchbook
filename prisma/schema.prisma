@@ -281,12 +281,10 @@ model Order {
   totalAmount     Int // paise
   currency        String      @default("INR")
 
-  // PhonePe references
-  // merchantOrderId is the id WE send to PhonePe (we use this Order's own id).
-  // phonepeOrderId is the order id PhonePe returns; phonepeState mirrors PhonePe's state.
-  merchantOrderId String? @unique
-  phonepeOrderId  String?
-  phonepeState    String? // PENDING | COMPLETED | FAILED (from PhonePe)
+  // Razorpay references
+  razorpayOrderId   String? @unique
+  razorpayPaymentId String?
+  razorpaySignature String?
 
   shippingName    String?
   shippingPhone   String?

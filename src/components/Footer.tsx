@@ -14,6 +14,11 @@ export default function Footer() {
             An independent unit under Inkzoid Publication. Helping budding and
             established writers across India find their niche, and earn through writing.
           </p>
+          <ul className="mt-4 space-y-1.5 text-sm">
+            <li><a href="mailto:scratchbookpublications@gmail.com" className="hover:text-gold">scratchbookpublications@gmail.com</a></li>
+            <li><a href="tel:+918847816635" className="hover:text-gold">+91 88478 16635</a></li>
+            <li><a href="https://www.instagram.com/scratchbook.publication__/" target="_blank" rel="noreferrer" className="hover:text-gold">@scratchbook.publication__</a></li>
+          </ul>
         </div>
 
         <div>

@@ -7,6 +7,7 @@ export type PriceTier = { label: string; rupees: number };
 export type ServiceItem = {
   name: string;
   description?: string;
+  price?: number; // single fixed price in rupees
   tiers?: PriceTier[];
   note?: string;
 };
@@ -15,6 +16,7 @@ export type ServiceGroup = {
   slug: string;
   title: string;
   blurb: string;
+  note?: string;
   items: ServiceItem[];
 };
 
@@ -47,24 +49,36 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
   {
     slug: "solo-book-packages",
     title: "Solo Book Packages",
-    blurb: "Tiered publishing packages to match every author's needs and budget.",
+    blurb: "Complete publishing & distribution packages (inclusive of SBSP services). All packages include ISBN allocation, manuscript making, formatting, print-on-demand and India-wide listing. Author keeps the copyright.",
     items: [
-      { name: "SB Basic" },
-      { name: "SB Bronze" },
-      { name: "SB Silver" },
-      { name: "SB Gold" },
-      { name: "SB Crystal" },
-      { name: "SB Deluxe" },
-      { name: "SB Diamond" },
-      { name: "SB Platinum" },
-      { name: "SB Radium" },
+      { name: "SB Basic", price: 999, description: "Publisher's Choice Publishing · up to 100 pages · basic editing · 1 cover round · 50% royalty." },
+      { name: "SB Bronze", price: 2499, description: "Publisher's Choice Publishing · up to 100 pages · 1 proofreading round · 1 complimentary copy · 50% royalty." },
+      { name: "SB Silver", price: 5499, description: "Publisher's Choice Publishing · up to 150 pages · podcasting & workshops · 2 copies · 50% royalty." },
+      { name: "SB Gold", price: 14999, description: "Author–Publisher Partnership · unlimited pages · hardbound + worldwide listing · 4 copies · 70% royalty." },
+      { name: "SB Crystal", price: 23999, description: "Author–Publisher Partnership · 5 editing rounds · inventory manager · 6 copies · 70% royalty." },
+      { name: "SB Deluxe", price: 44999, description: "Author–Publisher Partnership · 8 editing rounds · 50 books local distribution · 8 copies · 70% royalty." },
+      { name: "SB Diamond", price: 87999, description: "Self Publishing · 10 editing rounds · author website · 10 copies · negotiable royalty." },
+      { name: "SB Platinum", price: 129999, description: "Self Publishing · 12 editing rounds · 75 books distribution · 12 copies · negotiable royalty." },
+      { name: "SB Radium", price: 179999, description: "Self Publishing · 15 editing rounds · 100 books distribution · 15 copies · negotiable royalty." },
     ],
+    note: "+ ₹449 for books exceeding the package's page limit. Illustrations and AI/customized covers are chargeable extra.",
   },
   {
     slug: "special-services",
     title: "ScratchBook Special Services (SBSP)",
-    blurb: "Bespoke service bundles for authors who want a tailored journey.",
-    items: Array.from({ length: 10 }, (_, i) => ({ name: `SBSP - ${i + 1}` })),
+    blurb: "Bespoke, customisable service bundles you can add to any package. Buy according to the needs of your book.",
+    items: [
+      { name: "SBSP 1 — Workshops", description: "Anthology writing & solo book writing workshops." },
+      { name: "SBSP 2 — Mentorship", description: "Personal mentorship for anthologies and solo books." },
+      { name: "SBSP 3 — Branding Services", description: "Personal Branding (3 months) and Page Branding / copywriting for posters & social posts." },
+      { name: "SBSP 4 — Writing Services", description: "Content & copywriting, story/script-to-book, idea-to-book, audio books, and language translation.", note: "Language translation of a book: ₹2,50,000." },
+      { name: "SBSP 5 — Digital Package", description: "YouTube interview & review, FM session, newspaper article, local hoarding/posters." },
+      { name: "SBSP 6 — Promotional Package", description: "Exclusive book reading, digital promotions, Google Ads & SEO, critic analysis, media-house reviews." },
+      { name: "SBSP 7 — Post-release Services", description: "Giveaways, gift vouchers, posters, reviews, ratings, trailers, live & author interviews, buyback." },
+      { name: "SBSP 8 — Appreciative Services", description: "Google features & snippets, Google News, world-record certificate, celebrity appreciation, national magazine feature." },
+      { name: "SBSP 9 — Podcasting Services", price: 999, description: "Discord, YouTube, Spotify, FM, Apple/Google Podcast and more.", note: "Pack 1 starts at ₹999." },
+      { name: "SBSP 10 — Token of Love", description: "Customized bookmarks, illustrations, author notes, dedicated memoirs and dedications." },
+    ],
   },
   {
     slug: "branding",
