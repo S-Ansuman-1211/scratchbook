@@ -36,22 +36,23 @@ export async function POST(req: Request) {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // Authors are NOT created instantly. Everyone registers as a CUSTOMER; an
+    // "Author" choice only records a pending request for an admin to approve.
+    const wantsAuthor = role === "AUTHOR";
+
     const user = await prisma.user.create({
       data: {
         name,
         email: lowerEmail,
         mobile: mobile || null,
         passwordHash,
-        role,
-        // If registering as an author, create the linked author profile.
-        ...(role === "AUTHOR"
-          ? { authorProfile: { create: {} } }
-          : {}),
+        role: "CUSTOMER",
+        authorRequestedAt: wantsAuthor ? new Date() : null,
       },
     });
 
     return NextResponse.json(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, email: user.email, role: user.role, pendingAuthor: wantsAuthor },
       { status: 201 }
     );
   } catch (err) {

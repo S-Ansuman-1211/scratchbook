@@ -19,6 +19,7 @@ function SignupForm() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [applied, setApplied] = useState(false);
 
   function update(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -43,15 +44,45 @@ function SignupForm() {
       return;
     }
 
-    // Auto sign-in after registration
+    // Auto sign-in after registration (account is a customer for now).
     await signIn("credentials", {
       email: form.email,
       password: form.password,
       redirect: false,
     });
 
-    router.push(form.role === "AUTHOR" ? "/dashboard" : "/");
+    // Authors are approved by an admin — show a pending note instead of the dashboard.
+    if (data.pendingAuthor) {
+      setApplied(true);
+      setLoading(false);
+      router.refresh();
+      return;
+    }
+
+    router.push("/");
     router.refresh();
+  }
+
+  if (applied) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-dark to-ink px-4 py-10">
+        <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-xl">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/10 text-2xl text-brand">
+            ✓
+          </div>
+          <h1 className="mt-4 font-serif text-2xl font-bold text-ink">Author application submitted</h1>
+          <p className="mt-2 text-sm text-ink/70">
+            Thanks, {form.name || "there"}! Your account is active and you can shop right away.
+            Our team will review your author request — once approved, your{" "}
+            <strong>Author Dashboard</strong> unlocks and you can start publishing.
+          </p>
+          <div className="mt-6 flex flex-col gap-2">
+            <Link href="/books" className="btn-primary w-full">Browse books</Link>
+            <Link href="/" className="btn-outline w-full">Go to homepage</Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -77,6 +108,13 @@ function SignupForm() {
             </button>
           ))}
         </div>
+
+        {form.role === "AUTHOR" && (
+          <p className="mt-3 rounded-lg bg-brand-tint px-3 py-2 text-xs text-brand">
+            Author accounts are reviewed by our team. You&apos;ll register as a member now and get
+            author access (and your dashboard) once approved.
+          </p>
+        )}
 
         {error && (
           <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>

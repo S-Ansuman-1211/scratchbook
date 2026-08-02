@@ -3,17 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/money";
 
 export default async function AdminOverview() {
-  const [books, orders, paidAgg, participations, messages, users] = await Promise.all([
+  const [books, orders, paidAgg, participations, messages, users, authorRequests] = await Promise.all([
     prisma.book.count().catch(() => 0),
     prisma.order.count().catch(() => 0),
     prisma.order.aggregate({ where: { status: "PAID" }, _sum: { totalAmount: true } }).catch(() => ({ _sum: { totalAmount: 0 } })),
     prisma.eventParticipation.count().catch(() => 0),
     prisma.contactMessage.count().catch(() => 0),
     prisma.user.count().catch(() => 0),
+    prisma.user.count({ where: { authorRequestedAt: { not: null }, role: "CUSTOMER" } }).catch(() => 0),
   ]);
 
   const stats = [
     { label: "Revenue (paid)", value: formatINR(paidAgg._sum.totalAmount ?? 0), href: "/admin/orders", highlight: true },
+    { label: "Author requests", value: String(authorRequests), href: "/admin/authors" },
     { label: "Orders", value: String(orders), href: "/admin/orders" },
     { label: "Books", value: String(books), href: "/admin/books" },
     { label: "Event entries", value: String(participations), href: "/admin/participations" },
