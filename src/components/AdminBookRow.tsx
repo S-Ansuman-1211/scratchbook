@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type BookRow = {
   id: string;
@@ -16,14 +17,29 @@ type BookRow = {
 const paiseToRupees = (p: number | null) => (p == null ? "" : String(p / 100));
 
 export default function AdminBookRow({ book }: { book: BookRow }) {
+  const router = useRouter();
   const [status, setStatus] = useState(book.status);
   const [paperback, setPaperback] = useState(paiseToRupees(book.paperbackPrice));
   const [hardcase, setHardcase] = useState(paiseToRupees(book.hardcasePrice));
   const [ebook, setEbook] = useState(paiseToRupees(book.ebookPrice));
   const [coverUrl, setCoverUrl] = useState(book.coverUrl ?? "");
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [uploading, setUploading] = useState(false);
 
   const num = (s: string) => (s.trim() === "" ? null : Number(s));
+
+  async function uploadCover(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("folder", "covers");
+    const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+    const data = await res.json();
+    if (res.ok && data.url) setCoverUrl(data.url);
+    setUploading(false);
+  }
 
   async function save() {
     setState("saving");
@@ -41,10 +57,17 @@ export default function AdminBookRow({ book }: { book: BookRow }) {
     });
     if (res.ok) {
       setState("saved");
+      router.refresh();
       setTimeout(() => setState("idle"), 1500);
     } else {
       setState("error");
     }
+  }
+
+  async function remove() {
+    if (!confirm(`Delete "${book.title}"? This cannot be undone.`)) return;
+    const res = await fetch(`/api/admin/books?id=${book.id}`, { method: "DELETE" });
+    if (res.ok) router.refresh();
   }
 
   const priceInput = "w-24 rounded-lg border border-line px-2 py-1.5 text-sm outline-none focus:border-brand";
@@ -62,11 +85,27 @@ export default function AdminBookRow({ book }: { book: BookRow }) {
       <td className="px-4 py-3"><input value={paperback} onChange={(e) => setPaperback(e.target.value)} placeholder="—" className={priceInput} /></td>
       <td className="px-4 py-3"><input value={hardcase} onChange={(e) => setHardcase(e.target.value)} placeholder="—" className={priceInput} /></td>
       <td className="px-4 py-3"><input value={ebook} onChange={(e) => setEbook(e.target.value)} placeholder="—" className={priceInput} /></td>
-      <td className="px-4 py-3"><input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder="https://…" className="w-40 rounded-lg border border-line px-2 py-1.5 text-sm outline-none focus:border-brand" /></td>
       <td className="px-4 py-3">
-        <button onClick={save} disabled={state === "saving"} className="btn-primary px-4 py-1.5 text-xs">
-          {state === "saving" ? "Saving…" : state === "saved" ? "✓ Saved" : state === "error" ? "Retry" : "Save"}
-        </button>
+        <div className="flex items-center gap-2">
+          {coverUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={coverUrl} alt="" className="h-12 w-9 rounded border border-line object-cover" />
+          ) : (
+            <div className="grid h-12 w-9 place-items-center rounded border border-dashed border-line text-[9px] text-ink/40">none</div>
+          )}
+          <label className="cursor-pointer text-xs font-semibold text-brand hover:underline">
+            {uploading ? "…" : "Upload"}
+            <input type="file" accept="image/*" onChange={uploadCover} className="hidden" />
+          </label>
+        </div>
+      </td>
+      <td className="px-4 py-3">
+        <div className="flex items-center gap-2">
+          <button onClick={save} disabled={state === "saving"} className="btn-primary px-4 py-1.5 text-xs">
+            {state === "saving" ? "Saving…" : state === "saved" ? "✓ Saved" : state === "error" ? "Retry" : "Save"}
+          </button>
+          <button onClick={remove} className="text-xs font-semibold text-ink/40 hover:text-red-600">Delete</button>
+        </div>
       </td>
     </tr>
   );

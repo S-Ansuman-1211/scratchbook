@@ -49,11 +49,26 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
       {/* Cover */}
       <div className="container-x mt-8 max-w-4xl">
-        <div className="aspect-[16/7] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-ink to-[#2a2740]" />
+        <div className="aspect-[16/7] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-ink to-[#2a2740]">
+          {post.coverUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={post.coverUrl} alt={post.title} className="h-full w-full object-cover" />
+          )}
+        </div>
       </div>
 
       {/* Body */}
       <div className="container-x mt-10 max-w-3xl">
+        {post.linkUrl && (
+          <a
+            href={post.linkUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mb-8 inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-dark"
+          >
+            Read the full article ↗
+          </a>
+        )}
         <div className="prose-scratchbook space-y-4 text-[17px] leading-relaxed text-ink/80">
           {post.body.split("\n").filter(Boolean).map((para, i) => (
             <p key={i}>{para}</p>

@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/auth";
 const NAV = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/books", label: "Books & Prices" },
+  { href: "/admin/blog", label: "Blog" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/authors", label: "Author Requests" },
   { href: "/admin/participations", label: "Event Entries" },

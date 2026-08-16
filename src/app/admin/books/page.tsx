@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import AdminBookRow from "@/components/AdminBookRow";
 
@@ -8,10 +9,15 @@ export default async function AdminBooks() {
 
   return (
     <div>
-      <h2 className="font-serif text-2xl font-bold text-ink">Books &amp; Prices</h2>
-      <p className="mt-1 text-sm text-ink/55">
-        Edit status, prices (in ₹) and cover image URL. Changes save instantly.
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="font-serif text-2xl font-bold text-ink">Books &amp; Prices</h2>
+          <p className="mt-1 text-sm text-ink/55">
+            Edit status, prices (in ₹) and cover image. Upload a cover per row, then Save.
+          </p>
+        </div>
+        <Link href="/admin/books/new" className="btn-primary px-5 py-2.5">＋ Add book</Link>
+      </div>
 
       {books.length === 0 ? (
         <p className="mt-6 card text-center text-sm text-ink/50">No books yet. Seed the database or add books.</p>

@@ -184,6 +184,7 @@ model BlogPost {
   excerpt     String?
   body        String        @db.Text
   coverUrl    String?
+  linkUrl     String? // optional external article link
   published   Boolean       @default(true)
   likes       Int           @default(0)
   publishedAt DateTime      @default(now())
