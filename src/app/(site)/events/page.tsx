@@ -3,7 +3,7 @@ import ParticipateForm from "@/components/ParticipateForm";
 
 export const metadata = { title: "Events & Competitions | ScratchBook Publications" };
 
-type EventCard = { id?: string; title: string; type: string; description: string | null };
+type EventCard = { id?: string; title: string; type: string; description: string | null; bannerUrl?: string | null };
 
 const FALLBACK: EventCard[] = [
   { title: "Photography Contest", type: "COMPETITION", description: "Capture a story in a single frame. Open to all skill levels." },
@@ -20,7 +20,7 @@ export default async function EventsPage() {
 
   const list: EventCard[] =
     events.length > 0
-      ? events.map((e) => ({ id: e.id, title: e.title, type: e.type, description: e.description }))
+      ? events.map((e) => ({ id: e.id, title: e.title, type: e.type, description: e.description, bannerUrl: e.bannerUrl }))
       : FALLBACK;
 
   return (
@@ -37,6 +37,10 @@ export default async function EventsPage() {
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((e, i) => (
           <div key={e.id ?? i} className="card flex flex-col">
+            {e.bannerUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={e.bannerUrl} alt={e.title} className="mb-3 aspect-video w-full rounded-lg object-cover" />
+            )}
             <span className="badge">{e.type}</span>
             <h2 className="mt-3 font-serif text-lg font-bold text-ink">{e.title}</h2>
             <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/60">

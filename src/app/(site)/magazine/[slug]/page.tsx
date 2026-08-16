@@ -29,11 +29,16 @@ export default async function MagazineReaderPage({ params }: { params: Promise<{
         {/* Cover + meta */}
         <div className="md:sticky md:top-24 md:self-start">
           <div className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-line shadow-lift">
-            <div className="flex h-full w-full flex-col justify-between bg-gradient-to-br from-gold to-[#a15c07] p-5 text-white">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em]">ScratchBook</span>
-              <h2 className="font-serif text-2xl font-bold leading-tight">{m.title}</h2>
-              <span className="text-sm text-white/80">{m.edition}</span>
-            </div>
+            {m.coverUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={m.coverUrl} alt={m.title} className="h-full w-full object-cover" />
+            ) : (
+              <div className="flex h-full w-full flex-col justify-between bg-gradient-to-br from-gold to-[#a15c07] p-5 text-white">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em]">ScratchBook</span>
+                <h2 className="font-serif text-2xl font-bold leading-tight">{m.title}</h2>
+                <span className="text-sm text-white/80">{m.edition}</span>
+              </div>
+            )}
           </div>
 
           <dl className="mt-5 space-y-2 text-sm">

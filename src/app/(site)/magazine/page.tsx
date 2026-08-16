@@ -33,11 +33,16 @@ export default async function MagazinePage() {
             <article key={m.id} className="group card transition-all hover:-translate-y-1 hover:shadow-lift">
               <Link href={`/magazine/${m.slug}`}>
                 <div className="relative aspect-[3/4] overflow-hidden rounded-xl">
-                  <div className="flex h-full w-full flex-col justify-between bg-gradient-to-br from-gold to-[#a15c07] p-4 text-white">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">ScratchBook</span>
-                    <h2 className="font-serif text-lg font-bold leading-tight">{m.title}</h2>
-                    <span className="text-xs text-white/80">{m.edition}</span>
-                  </div>
+                  {m.coverUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={m.coverUrl} alt={m.title} className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full w-full flex-col justify-between bg-gradient-to-br from-gold to-[#a15c07] p-4 text-white">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">ScratchBook</span>
+                      <h2 className="font-serif text-lg font-bold leading-tight">{m.title}</h2>
+                      <span className="text-xs text-white/80">{m.edition}</span>
+                    </div>
+                  )}
                 </div>
               </Link>
               <span className="badge mt-3">{m.type.replace("_", " / ")}</span>
