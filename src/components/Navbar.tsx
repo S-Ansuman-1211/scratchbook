@@ -54,6 +54,9 @@ export default function Navbar() {
           </Link>
           {session?.user ? (
             <>
+              <Link href="/account/orders" className="text-sm font-medium text-ink/70 hover:text-brand">
+                My Orders
+              </Link>
               {session.user.role === "AUTHOR" && (
                 <Link href="/dashboard" className="text-sm font-semibold text-brand">
                   Dashboard

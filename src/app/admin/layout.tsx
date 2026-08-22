@@ -13,6 +13,7 @@ const NAV = [
   { href: "/admin/authors", label: "Author Requests" },
   { href: "/admin/participations", label: "Event Entries" },
   { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/settings", label: "Settings" },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

@@ -2,14 +2,18 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getShippingConfig } from "@/lib/settings";
 import { z } from "zod";
 
-// GET  /api/cart  -> current user's cart
+// GET  /api/cart  -> current user's cart + the shipping config (for totals)
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  const items = await prisma.cartItem.findMany({ where: { userId: session.user.id } });
-  return NextResponse.json({ items });
+  const [items, shipping] = await Promise.all([
+    prisma.cartItem.findMany({ where: { userId: session.user.id } }),
+    getShippingConfig(),
+  ]);
+  return NextResponse.json({ items, shipping });
 }
 
 const addSchema = z.object({

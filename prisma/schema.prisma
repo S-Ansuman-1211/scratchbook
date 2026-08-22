@@ -282,7 +282,10 @@ model Order {
   userId          String
   user            User        @relation(fields: [userId], references: [id])
   status          OrderStatus @default(PENDING)
-  totalAmount     Int // paise
+  subtotal        Int         @default(0) // paise, before tax/shipping
+  taxAmount       Int         @default(0) // paise, GST on services
+  shippingCost    Int         @default(0) // paise
+  totalAmount     Int // paise (subtotal + tax + shipping)
   currency        String      @default("INR")
 
   // Razorpay references
@@ -290,9 +293,17 @@ model Order {
   razorpayPaymentId String?
   razorpaySignature String?
 
-  shippingName    String?
-  shippingPhone   String?
-  shippingAddress String? @db.Text
+  // Structured delivery address
+  shippingName     String?
+  shippingPhone    String?
+  shippingHouse    String? // flat / house no., building
+  shippingArea     String? // street / area / locality
+  shippingCity     String?
+  shippingState    String?
+  shippingPincode  String?
+  shippingLandmark String?
+  shippingMapUrl   String? @db.Text // optional Google Maps link
+  shippingAddress  String? @db.Text // composed full address (for display/emails)
 
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
@@ -332,4 +343,12 @@ model NewsletterSubscriber {
   id        String   @id @default(cuid())
   email     String   @unique
   createdAt DateTime @default(now())
+}
+
+// ───────────────────────────── Site settings (admin-configurable) ─────────────────────────────
+// Key/value config, e.g. "shipping" => { standardCharge, freeAbove } (paise).
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
 }
