@@ -45,8 +45,8 @@ export default function PrivacyPage() {
       <LegalSection heading="4. Sharing of Information">
         <p>
           We do not sell your personal information. We share it only with trusted service providers who
-          help us operate — including our payment gateway (Razorpay), hosting provider, email service,
-          and distribution/printing partners — strictly to the extent needed to deliver our services, or
+          help us operate - including our payment gateway (Razorpay), hosting provider, email service,
+          and distribution/printing partners - strictly to the extent needed to deliver our services, or
           where required by law.
         </p>
       </LegalSection>

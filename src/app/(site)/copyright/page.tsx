@@ -6,14 +6,13 @@ export default function CopyrightPage() {
   return (
     <LegalShell title="Copyright Notice">
       <p>
-        © {new Date().getFullYear()} <strong>ScratchBook Publications</strong>, an independent unit under
-        Inkzoid Publication. All rights reserved.
+        © {new Date().getFullYear()} <strong>ScratchBook Publications</strong>. All rights reserved.
       </p>
 
       <LegalSection heading="1. Ownership of Website Content">
         <p>
-          All content on this website — including text, graphics, logos, the ScratchBook name and
-          branding, page design, and software — is the property of ScratchBook Publications or its
+          All content on this website - including text, graphics, logos, the ScratchBook name and
+          branding, page design, and software - is the property of ScratchBook Publications or its
           licensors and is protected by Indian and international copyright and trademark laws. It may not
           be copied, reproduced, republished or distributed without our prior written permission.
         </p>

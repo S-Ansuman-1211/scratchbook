@@ -41,7 +41,7 @@ export default async function AdminOrders() {
                 <tr key={o.id} className="border-t border-line align-top">
                   <td className="px-4 py-3 text-ink/60">{o.createdAt.toLocaleDateString("en-IN")}</td>
                   <td className="px-4 py-3">
-                    <div className="font-medium">{o.user?.name ?? "—"}</div>
+                    <div className="font-medium">{o.user?.name ?? "-"}</div>
                     <div className="text-xs text-ink/50">{o.user?.email}</div>
                   </td>
                   <td className="px-4 py-3 text-ink/70">

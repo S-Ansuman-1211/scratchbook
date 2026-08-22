@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-// Published Books — Book Details (Size, Pages, ISBN, Language, Genre, Book Type),
+// Published Books - Book Details (Size, Pages, ISBN, Language, Genre, Book Type),
 // latest files, and management links (Author Dashboard doc).
 export default async function DashboardBooksPage() {
   const session = await getServerSession(authOptions);
@@ -55,7 +55,7 @@ function Detail({ label, value }: { label: string; value?: string | null }) {
   return (
     <div>
       <dt className="text-xs text-ink/50">{label}</dt>
-      <dd className="font-medium">{value || "—"}</dd>
+      <dd className="font-medium">{value || "-"}</dd>
     </div>
   );
 }

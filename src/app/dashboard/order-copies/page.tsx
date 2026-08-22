@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 
-// Order Author Copies — Print Cost per Book × No. of Copies + Shipping (per dashboard doc).
-const PRINT_COST_PER_BOOK = 120; // rupees — placeholder; comes from the book's printCost in production
-const SHIPPING_FLAT = 60; // rupees — placeholder shipping
+// Order Author Copies - Print Cost per Book × No. of Copies + Shipping (per dashboard doc).
+const PRINT_COST_PER_BOOK = 120; // rupees - placeholder; comes from the book's printCost in production
+const SHIPPING_FLAT = 60; // rupees - placeholder shipping
 
 export default function OrderCopiesPage() {
   const [copies, setCopies] = useState(10);

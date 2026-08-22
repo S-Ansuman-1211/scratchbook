@@ -5,7 +5,7 @@ import Providers from "@/components/Providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-// Fraunces — an expressive display serif for headings; gives the premium,
+// Fraunces - an expressive display serif for headings; gives the premium,
 // editorial-yet-modern feel a bookstore storefront wants.
 const fraunces = Fraunces({
   subsets: ["latin"],

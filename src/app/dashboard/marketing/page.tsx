@@ -1,4 +1,4 @@
-// Marketing Tools — the post-release promotion toolkit (Author Dashboard + Website Flow docs).
+// Marketing Tools - the post-release promotion toolkit (Author Dashboard + Website Flow docs).
 const TOOLS = [
   "Giveaway",
   "Gift Voucher",

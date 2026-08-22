@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/money";
 
-// Author Dashboard overview — Author Details, Earnings, Quick actions, Published books.
+// Author Dashboard overview - Author Details, Earnings, Quick actions, Published books.
 export default async function DashboardOverview() {
   const session = await getServerSession(authOptions);
 
@@ -26,7 +26,7 @@ export default async function DashboardOverview() {
     <div className="space-y-8">
       {/* Author details + earnings cards */}
       <div className="grid gap-5 md:grid-cols-4">
-        <StatCard label="Author Name" value={session!.user.name ?? "—"} />
+        <StatCard label="Author Name" value={session!.user.name ?? "-"} />
         <StatCard label="Titles Published" value={String(titlesPublished)} />
         <StatCard label="Total Earnings" value={formatINR(profile?.totalEarnings ?? 0)} highlight />
         <StatCard label="Wallet Balance" value={formatINR(profile?.walletBalance ?? 0)} highlight />
@@ -75,10 +75,10 @@ export default async function DashboardOverview() {
                     <tr key={b.id} className="border-t border-black/5">
                       <td className="px-4 py-3 font-medium">{b.title}</td>
                       <td className="px-4 py-3 text-ink/60">
-                        {b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-IN") : "—"}
+                        {b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-IN") : "-"}
                       </td>
                       <td className="px-4 py-3">{paperback}</td>
-                      <td className="px-4 py-3">—</td>
+                      <td className="px-4 py-3">-</td>
                       <td className="px-4 py-3">
                         <Link href={`/dashboard/books/${b.id}`} className="text-brand hover:underline">
                           View &amp; Manage

@@ -14,9 +14,8 @@ export default function AboutPage() {
           to enhance the quality of writers by helping them choose their niche.
         </p>
         <p>
-          ScratchBook Publications — an independent unit under Inkzoid Publication — helps people
-          find their niche in writing and master it by networking with other writers from the
-          industry.
+          ScratchBook Publications helps people find their niche in writing and master it by
+          networking with other writers from the industry.
         </p>
 
         <div className="grid gap-6 sm:grid-cols-3">

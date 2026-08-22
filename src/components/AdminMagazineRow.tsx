@@ -17,7 +17,7 @@ export default function AdminMagazineRow({ magazine }: { magazine: Row }) {
     <tr className="border-t border-line align-top">
       <td className="px-4 py-3 font-medium">{magazine.title}</td>
       <td className="px-4 py-3"><span className="badge">{magazine.type.replace("_", " / ")}</span></td>
-      <td className="px-4 py-3 text-ink/60">{magazine.edition ?? "—"}</td>
+      <td className="px-4 py-3 text-ink/60">{magazine.edition ?? "-"}</td>
       <td className="px-4 py-3">
         <button onClick={remove} className="text-xs font-semibold text-ink/40 hover:text-red-600">Delete</button>
       </td>

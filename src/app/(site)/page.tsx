@@ -6,7 +6,7 @@ import AddToCart from "@/components/AddToCart";
 import LaunchCard from "@/components/LaunchCard";
 import { LAUNCHES } from "@/data/launches";
 
-// Home page — premium e-commerce storefront for ScratchBook Publications.
+// Home page - premium e-commerce storefront for ScratchBook Publications.
 export default async function HomePage() {
   const upcoming = await prisma.book
     .findMany({ where: { status: "UPCOMING" }, take: 4, orderBy: { createdAt: "desc" } })
@@ -17,19 +17,9 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Announcement bar */}
-      <div className="bg-ink text-center text-xs font-medium text-white/85">
-        <p className="container-x py-2">
-          ✦ Free author mentorship consultation this month —{" "}
-          <Link href="/signup?role=AUTHOR" className="font-semibold text-gold-light underline-offset-2 hover:underline">
-            claim your slot
-          </Link>
-        </p>
-      </div>
-
       {/* HERO */}
       <section className="relative overflow-hidden bg-paper">
-        {/* soft decorative glows — indigo, purple & orange */}
+        {/* soft decorative glows - indigo, purple & orange */}
         <div className="pointer-events-none absolute -right-32 -top-24 h-96 w-96 rounded-full bg-purple/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-24 left-1/4 h-72 w-72 rounded-full bg-orange/15 blur-3xl" />
         <div className="pointer-events-none absolute right-1/3 top-1/2 h-72 w-72 rounded-full bg-brand/15 blur-3xl" />
@@ -37,8 +27,10 @@ export default async function HomePage() {
         <div className="container-x relative grid items-center gap-12 py-16 md:grid-cols-[1.05fr_0.95fr] md:py-24">
           <div className="flex flex-col justify-center">
             <span className="eyebrow">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-              An independent unit under Inkzoid Publication
+              ✦ Free author mentorship consultation this month -{" "}
+              <Link href="/signup?role=AUTHOR" className="font-semibold text-gold underline-offset-2 hover:underline">
+                claim your slot
+              </Link>
             </span>
             <h1 className="mt-5 font-serif text-5xl font-semibold leading-[1.05] text-ink md:text-6xl">
               Turn your manuscript into a{" "}
@@ -47,7 +39,7 @@ export default async function HomePage() {
               </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/65">
-              Mentorship, publishing, branding and promotions — everything an author needs, in one
+              Mentorship, publishing, branding and promotions - everything an author needs, in one
               place. Buy books, book workshops, and grow your readership.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -136,7 +128,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Published books — buy now */}
+      {/* Published books - buy now */}
       <BookRow
         title="Bestsellers"
         subtitle="Buy now"
@@ -145,7 +137,7 @@ export default async function HomePage() {
         cta="buy"
       />
 
-      {/* Upcoming — pre-order */}
+      {/* Upcoming - pre-order */}
       <BookRow
         title="Coming soon"
         subtitle="Pre-order now"
@@ -165,8 +157,8 @@ export default async function HomePage() {
         </div>
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {[
-            { t: "Mentorship", d: "Personal mentorship for solo books and anthologies — learn the craft from professionals.", n: "01", color: "text-brand" },
-            { t: "Publishing", d: "Editing, proofreading, cover design, listing and distribution — end to end.", n: "02", color: "text-purple" },
+            { t: "Mentorship", d: "Personal mentorship for solo books and anthologies - learn the craft from professionals.", n: "01", color: "text-brand" },
+            { t: "Publishing", d: "Editing, proofreading, cover design, listing and distribution - end to end.", n: "02", color: "text-purple" },
             { t: "Branding & Promotion", d: "Build a personal brand, run digital promotions, reach readers of your niche.", n: "03", color: "text-orange" },
           ].map((c) => (
             <div key={c.t} className="card transition-all hover:-translate-y-1 hover:shadow-lift">
@@ -178,13 +170,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Gallery — celebrity-led book launches */}
+      {/* Gallery - celebrity-led book launches */}
       <section className="container-x py-16">
         <div className="mb-10 flex items-end justify-between">
           <div>
             <span className="eyebrow">Moments &amp; milestones</span>
             <h2 className="mt-2 font-serif text-3xl font-semibold text-ink">Celebrity-led Book Launches</h2>
-            <p className="mt-2 max-w-xl text-sm text-ink/60">Book launches, fairs and events — from Hyderabad to Doha.</p>
+            <p className="mt-2 max-w-xl text-sm text-ink/60">Book launches, fairs and events - from Hyderabad to Doha.</p>
           </div>
           <Link href="/gallery" className="hidden text-sm font-semibold text-brand hover:text-brand-dark sm:block">
             View gallery →
@@ -200,14 +192,14 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Extended Services — 360° creative platform */}
+      {/* Extended Services - 360° creative platform */}
       <section className="border-y border-line bg-ink py-16 text-white">
         <div className="container-x">
           <div className="max-w-2xl">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-light">Beyond publishing</span>
             <h2 className="mt-3 font-serif text-3xl font-semibold md:text-4xl">Our Extended Services</h2>
             <p className="mt-3 text-white/65">
-              ScratchBook is not just a publishing house — it&apos;s a{" "}
+              ScratchBook is not just a publishing house - it&apos;s a{" "}
               <span className="font-semibold text-white">360° creative platform</span>. In partnership
               with{" "}
               <Link href="/daa-magazine" className="font-semibold underline decoration-dotted underline-offset-2" style={{ color: "#c4b5fd" }}>DAA</Link>{" "}
@@ -286,7 +278,7 @@ export default async function HomePage() {
               </span>
               <h2 className="mt-3 font-serif text-3xl font-semibold">Events &amp; Competitions</h2>
               <p className="mt-2 max-w-xl text-white/70">
-                Photography, painting, poetry, illustration and story contests — win awards, get
+                Photography, painting, poetry, illustration and story contests - win awards, get
                 published, and even apply for records.
               </p>
             </div>

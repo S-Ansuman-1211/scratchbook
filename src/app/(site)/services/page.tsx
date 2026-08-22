@@ -13,7 +13,7 @@ export default function ServicesPage() {
         <p className="text-sm font-semibold uppercase tracking-wider text-gold">What we offer</p>
         <h1 className="mt-2 font-serif text-4xl font-bold">Our Services</h1>
         <p className="mt-4 text-ink/70">
-          From the first idea to becoming a best-seller — every kind of guidance and mentorship,
+          From the first idea to becoming a best-seller - every kind of guidance and mentorship,
           as and when required.
         </p>
       </header>

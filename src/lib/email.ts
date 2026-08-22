@@ -52,7 +52,7 @@ export function emailLayout(heading: string, bodyHtml: string): string {
     <div style="border:1px solid #e8e7f0;border-top:none;border-radius:0 0 12px 12px;padding:28px 24px">
       <h1 style="font-size:20px;margin:0 0 12px">${heading}</h1>
       ${bodyHtml}
-      <p style="margin-top:28px;font-size:12px;color:#8b8a95">ScratchBook Publications · An independent unit under Inkzoid Publication</p>
+      <p style="margin-top:28px;font-size:12px;color:#8b8a95">ScratchBook Publications</p>
     </div>
   </div>`;
 }

@@ -7,7 +7,7 @@ export default function TermsPage() {
     <LegalShell title="Terms &amp; Conditions">
       <p>
         These Terms &amp; Conditions (&quot;Terms&quot;) govern your use of the website and services of
-        <strong> ScratchBook Publications</strong>, an independent unit under Inkzoid Publication
+        <strong> ScratchBook Publications</strong>
         (&quot;ScratchBook&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By accessing our website,
         creating an account, or purchasing books or services, you agree to these Terms. If you do not
         agree, please do not use our website.

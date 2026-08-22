@@ -51,7 +51,7 @@ function SignupForm() {
       redirect: false,
     });
 
-    // Authors are approved by an admin — show a pending note instead of the dashboard.
+    // Authors are approved by an admin - show a pending note instead of the dashboard.
     if (data.pendingAuthor) {
       setApplied(true);
       setLoading(false);
@@ -73,7 +73,7 @@ function SignupForm() {
           <h1 className="mt-4 font-serif text-2xl font-bold text-ink">Author application submitted</h1>
           <p className="mt-2 text-sm text-ink/70">
             Thanks, {form.name || "there"}! Your account is active and you can shop right away.
-            Our team will review your author request — once approved, your{" "}
+            Our team will review your author request - once approved, your{" "}
             <strong>Author Dashboard</strong> unlocks and you can start publishing.
           </p>
           <div className="mt-6 flex flex-col gap-2">

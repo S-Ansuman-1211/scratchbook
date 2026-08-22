@@ -11,8 +11,8 @@ export default function Footer() {
             <h3 className="font-serif text-xl font-bold text-white">Scratch<span className="text-gold-light">Book</span></h3>
           </div>
           <p className="mt-3 max-w-xs text-sm leading-relaxed">
-            An independent unit under Inkzoid Publication. Helping budding and
-            established writers across India find their niche, and earn through writing.
+            Helping budding and established writers across India find their niche,
+            and earn through writing.
           </p>
           <ul className="mt-4 space-y-1.5 text-sm">
             <li><a href="mailto:scratchbookpublications@gmail.com" className="hover:text-gold">scratchbookpublications@gmail.com</a></li>

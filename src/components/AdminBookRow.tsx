@@ -82,9 +82,9 @@ export default function AdminBookRow({ book }: { book: BookRow }) {
           <option value="DRAFT">Draft</option>
         </select>
       </td>
-      <td className="px-4 py-3"><input value={paperback} onChange={(e) => setPaperback(e.target.value)} placeholder="—" className={priceInput} /></td>
-      <td className="px-4 py-3"><input value={hardcase} onChange={(e) => setHardcase(e.target.value)} placeholder="—" className={priceInput} /></td>
-      <td className="px-4 py-3"><input value={ebook} onChange={(e) => setEbook(e.target.value)} placeholder="—" className={priceInput} /></td>
+      <td className="px-4 py-3"><input value={paperback} onChange={(e) => setPaperback(e.target.value)} placeholder="-" className={priceInput} /></td>
+      <td className="px-4 py-3"><input value={hardcase} onChange={(e) => setHardcase(e.target.value)} placeholder="-" className={priceInput} /></td>
+      <td className="px-4 py-3"><input value={ebook} onChange={(e) => setEbook(e.target.value)} placeholder="-" className={priceInput} /></td>
       <td className="px-4 py-3">
         <div className="flex items-center gap-2">
           {coverUrl ? (

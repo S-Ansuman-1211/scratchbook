@@ -47,7 +47,7 @@ export async function PATCH(req: Request) {
       subject: "You're now a ScratchBook Author 🎉",
       html: emailLayout(
         "Your author account is approved!",
-        `<p>Hi ${user.name}, great news — your author application has been approved.</p>
+        `<p>Hi ${user.name}, great news - your author application has been approved.</p>
          <p>Log in and head to your <strong>Author Dashboard</strong> to start publishing, track sales and manage your books.</p>`
       ),
     });

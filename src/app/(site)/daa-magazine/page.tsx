@@ -3,21 +3,21 @@ import Link from "next/link";
 export const metadata = {
   title: "D'Artiste Artifex (DAA) Magazine | ScratchBook Publications",
   description:
-    "D'Artiste Artifex — a celebrity & entertainment magazine series where literature and stardom collide. A ScratchBook extended service.",
+    "D'Artiste Artifex - a celebrity & entertainment magazine series where literature and stardom collide. A ScratchBook extended service.",
 };
 
 const EDITIONS = [
-  { title: "She & Her", desc: "A tribute to women — interviews with leading women in journalism, acting, entertainment and broadcasting.", accent: "#e11d63" },
+  { title: "She & Her", desc: "A tribute to women - interviews with leading women in journalism, acting, entertainment and broadcasting.", accent: "#e11d63" },
   { title: "T Town Beauty Icon", desc: "The debut issue featuring film actress Hebah Patel, with legendary singers, anchors and directors of the South Indian film industry.", accent: "#7c3aed" },
-  { title: "Young Era of Film Making", desc: "Three talented Tollywood directors on the cover — Trinadha Rao Nakkina, Vijay Kumar Kalivarapu & Vinod Anantoju.", accent: "#ea580c" },
-  { title: "Dance Xpress", desc: "In collaboration with Pace Creators Dance Academy — launched at 'Dancing Super Star 6', Visakhapatnam.", accent: "#0891b2" },
+  { title: "Young Era of Film Making", desc: "Three talented Tollywood directors on the cover - Trinadha Rao Nakkina, Vijay Kumar Kalivarapu & Vinod Anantoju.", accent: "#ea580c" },
+  { title: "Dance Xpress", desc: "In collaboration with Pace Creators Dance Academy - launched at 'Dancing Super Star 6', Visakhapatnam.", accent: "#0891b2" },
   { title: "Docs Talk", desc: "A heartfelt tribute to doctors, published on Doctor's Day with interviews from esteemed doctors across fields.", accent: "#059669" },
 ];
 
 const COVERS_WE_DO = [
-  { t: "Personal Magazine", d: "Your career graph, hurdles and achievements — concreted into a magazine." },
+  { t: "Personal Magazine", d: "Your career graph, hurdles and achievements - concreted into a magazine." },
   { t: "Movie Magazine", d: "Every detail of your film's journey, from the first idea to the cinema, bound into a magazine." },
-  { t: "Diva / Group Magazine", d: "A group of achievers who share the same fame and zeal — success 'printed' together." },
+  { t: "Diva / Group Magazine", d: "A group of achievers who share the same fame and zeal - success 'printed' together." },
 ];
 
 const MEDIA = ["Indian Express", "Google News", "Web Story India", "Pixstory", "Medium", "Dailyhunt", "LiveJournal", "YKA"];
@@ -25,7 +25,7 @@ const MEDIA = ["Indian Express", "Google News", "Web Story India", "Pixstory", "
 export default function DaaMagazinePage() {
   return (
     <>
-      {/* Hero — DAA purple/orange branding */}
+      {/* Hero - DAA purple/orange branding */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#3b1a78] via-[#4c1d95] to-[#7c3aed] text-white">
         <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-orange/30 blur-3xl" />
         <div className="container-x relative py-20 md:py-28">
@@ -39,7 +39,7 @@ export default function DaaMagazinePage() {
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-white/80">
-            A platform where a unique blend of notable writers and celebrities live in one place —
+            A platform where a unique blend of notable writers and celebrities live in one place -
             <span className="font-semibold text-white"> where literature and stardom collide.</span>
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -62,13 +62,13 @@ export default function DaaMagazinePage() {
           </div>
           <div className="space-y-4 text-ink/70">
             <p>
-              We provide a space for talented artists — writers, photographers, dancers, painters and
-              more — to share their skills, work and journey through interviews and articles, with a
+              We provide a space for talented artists - writers, photographers, dancers, painters and
+              more - to share their skills, work and journey through interviews and articles, with a
               permanent section dedicated to writers.
             </p>
             <p>
               We leverage upcoming writers&apos; talent with the fame of celebrities, giving artists of
-              all genres a global platform to be recognised — a class by itself.
+              all genres a global platform to be recognised - a class by itself.
             </p>
           </div>
         </div>

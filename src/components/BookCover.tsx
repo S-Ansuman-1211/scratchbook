@@ -7,7 +7,7 @@ import Image from "next/image";
  *    on a paper-like card) instead of a random coloured block.
  *
  * This keeps the catalog looking finished even before real cover art is
- * uploaded — just set `coverUrl` on the Book and the image takes over.
+ * uploaded - just set `coverUrl` on the Book and the image takes over.
  */
 export default function BookCover({
   title,

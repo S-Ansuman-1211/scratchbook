@@ -41,8 +41,8 @@ export default function RefundPage() {
           For publishing packages and services, refunds depend on the stage of work completed:
         </p>
         <ul className="list-disc space-y-1 pl-6">
-          <li>Before any work has commenced — eligible for a refund, less any non-recoverable third-party costs (e.g. ISBN, government fees) already incurred.</li>
-          <li>Once work has begun (editing, design, listing, promotions, etc.) — fees for completed milestones are non-refundable.</li>
+          <li>Before any work has commenced - eligible for a refund, less any non-recoverable third-party costs (e.g. ISBN, government fees) already incurred.</li>
+          <li>Once work has begun (editing, design, listing, promotions, etc.) - fees for completed milestones are non-refundable.</li>
           <li>Third-party and platform-driven services (e.g. celebrity features, paid promotions, printing) are non-refundable once initiated.</li>
         </ul>
       </LegalSection>
@@ -51,14 +51,14 @@ export default function RefundPage() {
         <p>
           Email <a href="mailto:scratchbookpublications@gmail.com" className="text-brand hover:underline">scratchbookpublications@gmail.com</a>{" "}
           or call <a href="tel:+918847816635" className="text-brand hover:underline">+91 88478 16635</a> with your
-          order ID and reason. Our team will respond within 2–3 business days.
+          order ID and reason. Our team will respond within 2-3 business days.
         </p>
       </LegalSection>
 
       <LegalSection heading="5. Refund Timelines">
         <p>
           Approved refunds are processed back to your original payment method through Razorpay. Once
-          approved, refunds typically reflect in your account within <strong>5–7 business days</strong>,
+          approved, refunds typically reflect in your account within <strong>5-7 business days</strong>,
           depending on your bank or payment provider.
         </p>
       </LegalSection>

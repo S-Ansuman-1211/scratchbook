@@ -1,4 +1,4 @@
-// Services catalog — transcribed from "Website Flow - 2026" doc.
+// Services catalog - transcribed from "Website Flow - 2026" doc.
 // Prices that are explicitly listed in the doc are included (in rupees).
 // Where the doc gives no price, the item is shown as "Enquire".
 
@@ -54,9 +54,9 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { name: "SB Basic", price: 999, description: "Publisher's Choice Publishing · up to 100 pages · basic editing · 1 cover round · 50% royalty." },
       { name: "SB Bronze", price: 2499, description: "Publisher's Choice Publishing · up to 100 pages · 1 proofreading round · 1 complimentary copy · 50% royalty." },
       { name: "SB Silver", price: 5499, description: "Publisher's Choice Publishing · up to 150 pages · podcasting & workshops · 2 copies · 50% royalty." },
-      { name: "SB Gold", price: 14999, description: "Author–Publisher Partnership · unlimited pages · hardbound + worldwide listing · 4 copies · 70% royalty." },
-      { name: "SB Crystal", price: 23999, description: "Author–Publisher Partnership · 5 editing rounds · inventory manager · 6 copies · 70% royalty." },
-      { name: "SB Deluxe", price: 44999, description: "Author–Publisher Partnership · 8 editing rounds · 50 books local distribution · 8 copies · 70% royalty." },
+      { name: "SB Gold", price: 14999, description: "Author-Publisher Partnership · unlimited pages · hardbound + worldwide listing · 4 copies · 70% royalty." },
+      { name: "SB Crystal", price: 23999, description: "Author-Publisher Partnership · 5 editing rounds · inventory manager · 6 copies · 70% royalty." },
+      { name: "SB Deluxe", price: 44999, description: "Author-Publisher Partnership · 8 editing rounds · 50 books local distribution · 8 copies · 70% royalty." },
       { name: "SB Diamond", price: 87999, description: "Self Publishing · 10 editing rounds · author website · 10 copies · negotiable royalty." },
       { name: "SB Platinum", price: 129999, description: "Self Publishing · 12 editing rounds · 75 books distribution · 12 copies · negotiable royalty." },
       { name: "SB Radium", price: 179999, description: "Self Publishing · 15 editing rounds · 100 books distribution · 15 copies · negotiable royalty." },
@@ -68,23 +68,23 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
     title: "ScratchBook Special Services (SBSP)",
     blurb: "Bespoke, customisable service bundles you can add to any package. Buy according to the needs of your book.",
     items: [
-      { name: "SBSP 1 — Workshops", description: "Anthology writing & solo book writing workshops." },
-      { name: "SBSP 2 — Mentorship", description: "Personal mentorship for anthologies and solo books." },
-      { name: "SBSP 3 — Branding Services", description: "Personal Branding (3 months) and Page Branding / copywriting for posters & social posts." },
-      { name: "SBSP 4 — Writing Services", description: "Content & copywriting, story/script-to-book, idea-to-book, audio books, and language translation.", note: "Language translation of a book: ₹2,50,000." },
-      { name: "SBSP 5 — Digital Package", description: "YouTube interview & review, FM session, newspaper article, local hoarding/posters." },
-      { name: "SBSP 6 — Promotional Package", description: "Exclusive book reading, digital promotions, Google Ads & SEO, critic analysis, media-house reviews." },
-      { name: "SBSP 7 — Post-release Services", description: "Giveaways, gift vouchers, posters, reviews, ratings, trailers, live & author interviews, buyback." },
-      { name: "SBSP 8 — Appreciative Services", description: "Google features & snippets, Google News, world-record certificate, celebrity appreciation, national magazine feature." },
-      { name: "SBSP 9 — Podcasting Services", price: 999, description: "Discord, YouTube, Spotify, FM, Apple/Google Podcast and more.", note: "Pack 1 starts at ₹999." },
-      { name: "SBSP 10 — Token of Love", description: "Customized bookmarks, illustrations, author notes, dedicated memoirs and dedications." },
+      { name: "SBSP 1 - Workshops", description: "Anthology writing & solo book writing workshops." },
+      { name: "SBSP 2 - Mentorship", description: "Personal mentorship for anthologies and solo books." },
+      { name: "SBSP 3 - Branding Services", description: "Personal Branding (3 months) and Page Branding / copywriting for posters & social posts." },
+      { name: "SBSP 4 - Writing Services", description: "Content & copywriting, story/script-to-book, idea-to-book, audio books, and language translation.", note: "Language translation of a book: ₹2,50,000." },
+      { name: "SBSP 5 - Digital Package", description: "YouTube interview & review, FM session, newspaper article, local hoarding/posters." },
+      { name: "SBSP 6 - Promotional Package", description: "Exclusive book reading, digital promotions, Google Ads & SEO, critic analysis, media-house reviews." },
+      { name: "SBSP 7 - Post-release Services", description: "Giveaways, gift vouchers, posters, reviews, ratings, trailers, live & author interviews, buyback." },
+      { name: "SBSP 8 - Appreciative Services", description: "Google features & snippets, Google News, world-record certificate, celebrity appreciation, national magazine feature." },
+      { name: "SBSP 9 - Podcasting Services", price: 999, description: "Discord, YouTube, Spotify, FM, Apple/Google Podcast and more.", note: "Pack 1 starts at ₹999." },
+      { name: "SBSP 10 - Token of Love", description: "Customized bookmarks, illustrations, author notes, dedicated memoirs and dedications." },
     ],
   },
   {
     slug: "branding",
     title: "Branding",
     blurb:
-      "The digital era is ruled by those with the most value. A brand is the new way of building trust — through consistency and genuineness.",
+      "The digital era is ruled by those with the most value. A brand is the new way of building trust - through consistency and genuineness.",
     items: [
       { name: "Personal Branding" },
       { name: "Page Branding" },
@@ -93,7 +93,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
   {
     slug: "digital-promotions",
     title: "Digital Promotions",
-    blurb: "Target selected audiences, and choose when and where — unlike traditional promotions.",
+    blurb: "Target selected audiences, and choose when and where - unlike traditional promotions.",
     items: [
       { name: "One YouTube interview" },
       { name: "YouTube review" },
@@ -141,7 +141,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { name: "Gift Voucher", description: "Hosted from your or a reviewer's account.", tiers: [{ label: "2 slots", rupees: 100 }] },
       { name: "Promotional Posters", tiers: [{ label: "30 slots", rupees: 450 }, { label: "50 slots", rupees: 750 }, { label: "100 slots", rupees: 1500 }] },
       { name: "Missing letters of the title", description: "Reviewers reshare your missing-letter posts to build curiosity.", tiers: [{ label: "10 slots", rupees: 300 }, { label: "20 slots", rupees: 600 }, { label: "30 slots", rupees: 900 }] },
-      { name: "Short reviews", description: "8–10 line reviews on Amazon & Goodreads (excl. book cost).", tiers: [{ label: "30 slots", rupees: 2000 }, { label: "50 slots", rupees: 3000 }, { label: "100 slots", rupees: 6000 }] },
+      { name: "Short reviews", description: "8-10 line reviews on Amazon & Goodreads (excl. book cost).", tiers: [{ label: "30 slots", rupees: 2000 }, { label: "50 slots", rupees: 3000 }, { label: "100 slots", rupees: 6000 }] },
       { name: "Long reviews", description: "Reviews on Amazon, Instagram & Goodreads (excl. book cost).", tiers: [{ label: "30 slots", rupees: 4000 }, { label: "50 slots", rupees: 6000 }, { label: "100 slots", rupees: 9000 }] },
       { name: "Only Rating (Kindle)", tiers: [{ label: "30 slots", rupees: 300 }, { label: "50 slots", rupees: 1250 }, { label: "100 slots", rupees: 2500 }], note: "Kindle recommended; 30 slots suggested." },
       { name: "Only Rating (Paperback)", tiers: [{ label: "30 slots", rupees: 100 }, { label: "50 slots", rupees: 1500 }, { label: "100 slots", rupees: 3000 }], note: "Excludes book cost." },
@@ -150,7 +150,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { name: "Blog reviews", tiers: [{ label: "10 slots", rupees: 400 }, { label: "20 slots", rupees: 500 }, { label: "30 slots", rupees: 600 }], note: "20 slots suggested." },
       { name: "Live Interviews", description: "One high-following reviewer hosts a 45-min live session.", tiers: [{ label: "1 reviewer", rupees: 300 }] },
       { name: "Author Interview Post", description: "Reviewer posts your Q&A on their feed.", tiers: [{ label: "2 slots", rupees: 400 }] },
-      { name: "Buyback", description: "Reviewers buy the paperback and give a 5-star, 10–15 line review (excl. book cost).", tiers: [{ label: "30 slots", rupees: 2000 }, { label: "50 slots", rupees: 4000 }, { label: "100 slots", rupees: 8000 }] },
+      { name: "Buyback", description: "Reviewers buy the paperback and give a 5-star, 10-15 line review (excl. book cost).", tiers: [{ label: "30 slots", rupees: 2000 }, { label: "50 slots", rupees: 4000 }, { label: "100 slots", rupees: 8000 }] },
     ],
   },
   {

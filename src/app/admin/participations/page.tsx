@@ -32,11 +32,11 @@ export default async function AdminParticipations() {
                   <td className="px-4 py-3 font-medium">{r.eventTitle}</td>
                   <td className="px-4 py-3">{r.name}</td>
                   <td className="px-4 py-3 text-ink/70">{r.email}</td>
-                  <td className="px-4 py-3 text-ink/70">{r.category ?? "—"}</td>
+                  <td className="px-4 py-3 text-ink/70">{r.category ?? "-"}</td>
                   <td className="px-4 py-3">
                     {r.entryUrl ? (
                       <a href={r.entryUrl} target="_blank" rel="noreferrer" className="text-brand hover:underline">Link ↗</a>
-                    ) : "—"}
+                    ) : "-"}
                   </td>
                 </tr>
               ))}

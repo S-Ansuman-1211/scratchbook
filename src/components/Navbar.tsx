@@ -74,10 +74,10 @@ export default function Navbar() {
           ) : (
             <>
               <Link href="/login" className="text-sm font-medium text-ink/70 hover:text-brand">
-                Login
+                Sign In
               </Link>
               <Link href="/signup" className="btn-primary px-4 py-1.5">
-                Join Us
+                Sign Up
               </Link>
             </>
           )}
@@ -115,8 +115,8 @@ export default function Navbar() {
                 </button>
               ) : (
                 <>
-                  <Link href="/login" className="btn-outline flex-1">Login</Link>
-                  <Link href="/signup" className="btn-primary flex-1">Join Us</Link>
+                  <Link href="/login" className="btn-outline flex-1">Sign In</Link>
+                  <Link href="/signup" className="btn-primary flex-1">Sign Up</Link>
                 </>
               )}
             </li>

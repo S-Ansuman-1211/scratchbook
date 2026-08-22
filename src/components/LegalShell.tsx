@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-// Shared wrapper for legal/policy pages — consistent heading, meta and prose styling.
+// Shared wrapper for legal/policy pages - consistent heading, meta and prose styling.
 export default function LegalShell({
   title,
   updated = "August 2026",

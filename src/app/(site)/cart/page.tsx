@@ -84,7 +84,7 @@ export default function CartPage() {
     }
 
     if (!window.Razorpay) {
-      setMessage("Payment SDK still loading — please try again in a moment.");
+      setMessage("Payment SDK still loading - please try again in a moment.");
       setPaying(false);
       return;
     }
@@ -174,7 +174,7 @@ export default function CartPage() {
               <span className="text-lg font-bold text-brand">{formatINR(total)}</span>
             </div>
 
-            {/* Delivery details — required for shipping physical books */}
+            {/* Delivery details - required for shipping physical books */}
             <div className="card space-y-4">
               <h2 className="font-serif text-lg font-bold text-ink">Delivery details</h2>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -209,7 +209,7 @@ export default function CartPage() {
               {paying ? "Processing…" : "Proceed to Pay"}
             </button>
             <p className="text-center text-xs text-ink/50">
-              🔒 Secure payment via Razorpay — UPI, Google Pay, PhonePe, cards &amp; netbanking.
+              🔒 Secure payment via Razorpay - UPI, Google Pay, PhonePe, cards &amp; netbanking.
             </p>
           </div>
         )}

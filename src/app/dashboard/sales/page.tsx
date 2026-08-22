@@ -10,7 +10,7 @@ const CHANNEL_LABEL: Record<string, string> = {
   EBOOK_STORE: "Online E-Book Store",
 };
 
-// Sales Insight — Sales & Distribution Summary + Detailed Report (per Author Dashboard doc).
+// Sales Insight - Sales & Distribution Summary + Detailed Report (per Author Dashboard doc).
 export default async function SalesPage() {
   const session = await getServerSession(authOptions);
   const profile = await prisma.authorProfile

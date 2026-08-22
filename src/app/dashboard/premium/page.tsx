@@ -1,4 +1,4 @@
-// Premium Services — Digital, Promotional & Recognition packages (Author Dashboard doc).
+// Premium Services - Digital, Promotional & Recognition packages (Author Dashboard doc).
 const PACKAGES = [
   {
     title: "Digital Packages",

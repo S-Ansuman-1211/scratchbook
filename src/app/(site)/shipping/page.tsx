@@ -18,18 +18,18 @@ export default function ShippingPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="2. Physical Books — Processing Time">
+      <LegalSection heading="2. Physical Books - Processing Time">
         <p>
           Many of our titles are <strong>print-on-demand</strong>, which means each copy is printed after
           your order is placed. Orders are typically processed and dispatched within{" "}
-          <strong>3–7 business days</strong>. Pre-orders and author copies may take longer, as indicated
+          <strong>3-7 business days</strong>. Pre-orders and author copies may take longer, as indicated
           on the product page.
         </p>
       </LegalSection>
 
       <LegalSection heading="3. Delivery Timelines">
         <p>
-          After dispatch, delivery within India usually takes <strong>4–10 business days</strong>,
+          After dispatch, delivery within India usually takes <strong>4-10 business days</strong>,
           depending on your location and the courier partner. Remote areas may take additional time.
           Delivery estimates are indicative and not guaranteed.
         </p>

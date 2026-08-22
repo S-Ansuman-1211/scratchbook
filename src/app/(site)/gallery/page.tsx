@@ -10,7 +10,7 @@ export default function GalleryPage() {
         <span className="eyebrow">Moments &amp; milestones</span>
         <h1 className="mt-2 font-serif text-4xl font-semibold text-ink md:text-5xl">Our Gallery</h1>
         <p className="mt-3 text-ink/60">
-          Celebrity-led book launches, book fairs and events from across the ScratchBook journey —
+          Celebrity-led book launches, book fairs and events from across the ScratchBook journey -
           from Hyderabad to Doha.
         </p>
       </div>

@@ -53,12 +53,11 @@ export default function ContactPage() {
           <li className="flex gap-3">
             <span>📍</span>
             <span className="text-ink/70">
-              Flat No. 301, 3rd Floor, S Cube Apartments, 9th Phase, KPHB – Gokul Flats,
+              Flat No. 301, 3rd Floor, S Cube Apartments, 9th Phase, KPHB - Gokul Flats,
               Hyderabad, Telangana 500085
             </span>
           </li>
         </ul>
-        <p className="mt-6 text-xs text-ink/45">An independent unit under Inkzoid Publication.</p>
       </div>
 
       <div className="card">

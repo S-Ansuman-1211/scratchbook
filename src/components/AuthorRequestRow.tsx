@@ -29,7 +29,7 @@ export default function AuthorRequestRow({ user }: { user: Row }) {
       <td className="px-4 py-3 text-ink/60">{new Date(user.requestedAt).toLocaleDateString("en-IN")}</td>
       <td className="px-4 py-3 font-medium">{user.name}</td>
       <td className="px-4 py-3 text-ink/70">{user.email}</td>
-      <td className="px-4 py-3 text-ink/70">{user.mobile ?? "—"}</td>
+      <td className="px-4 py-3 text-ink/70">{user.mobile ?? "-"}</td>
       <td className="px-4 py-3">
         {state === "done" ? (
           <span className="text-sm text-emerald-600">Done</span>
