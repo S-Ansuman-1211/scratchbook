@@ -1,6 +1,20 @@
 import { SERVICE_GROUPS } from "@/data/services";
 import ServiceEnquiry from "@/components/ServiceEnquiry";
 
+// The 10 special-service sections shown under the "ScratchBook Special Services (SBSP)" heading.
+const SBSP_SLUGS = new Set([
+  "workshops",
+  "mentorship",
+  "branding",
+  "writing-services",
+  "digital-package",
+  "promotional-package",
+  "post-release-promotions",
+  "recognition",
+  "podcasting-services",
+  "gifts-dedications",
+]);
+
 export const metadata = {
   title: "Services | ScratchBook Publications",
   description:
@@ -33,8 +47,17 @@ export default function ServicesPage() {
       </nav>
 
       <div className="mt-14 space-y-16">
-        {SERVICE_GROUPS.map((group) => (
-          <section key={group.slug} id={group.slug} className="scroll-mt-24">
+        {SERVICE_GROUPS.map((group, idx) => (
+          <div key={group.slug}>
+            {/* Parent heading before the first SBSP special service */}
+            {SBSP_SLUGS.has(group.slug) && !SBSP_SLUGS.has(SERVICE_GROUPS[idx - 1]?.slug) && (
+              <div className="mb-10 rounded-2xl border border-line bg-cream p-6 text-center">
+                <span className="eyebrow justify-center">Add-ons for any package</span>
+                <h2 className="mt-2 font-serif text-3xl font-semibold text-ink">ScratchBook Special Services (SBSP)</h2>
+                <p className="mt-2 text-sm text-ink/60">Ten bespoke, customisable service bundles you can add to any book.</p>
+              </div>
+            )}
+          <section id={group.slug} className="scroll-mt-24">
             <div className="mb-6 border-l-4 border-brand pl-4">
               <h2 className="font-serif text-2xl font-bold text-ink">{group.title}</h2>
               <p className="mt-1 max-w-3xl text-sm text-ink/60">{group.blurb}</p>
@@ -83,6 +106,7 @@ export default function ServicesPage() {
               })}
             </div>
           </section>
+          </div>
         ))}
       </div>
     </div>
