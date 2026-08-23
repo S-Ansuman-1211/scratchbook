@@ -35,8 +35,24 @@ if (googleEnabled) {
   );
 }
 
+const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith("https://") ?? false;
+
 export const authOptions: NextAuthOptions = {
-  session: { strategy: "jwt" },
+  // Sessions end when the browser closes (session cookie), with a 1-day JWT
+  // cap as a safety net so a session can never linger.
+  session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
+  cookies: {
+    sessionToken: {
+      name: `${useSecureCookies ? "__Secure-" : ""}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: useSecureCookies,
+        // No maxAge/expires -> browser deletes the cookie when it closes.
+      },
+    },
+  },
   pages: { signIn: "/login" },
   providers,
   callbacks: {
