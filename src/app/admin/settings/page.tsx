@@ -1,26 +1,33 @@
-import { getShippingConfig } from "@/lib/settings";
+import { getShippingConfig, getAuthorAppConfig } from "@/lib/settings";
 import AdminShippingForm from "@/components/AdminShippingForm";
+import AdminAuthorConfigForm from "@/components/AdminAuthorConfigForm";
 
 export default async function AdminSettings() {
-  const cfg = await getShippingConfig();
+  const [cfg, authorCfg] = await Promise.all([getShippingConfig(), getAuthorAppConfig()]);
 
   return (
-    <div>
-      <h2 className="font-serif text-2xl font-bold text-ink">Settings</h2>
-      <p className="mt-1 text-sm text-ink/55">Shipping charges applied at checkout for physical orders.</p>
+    <div className="space-y-10">
+      <div>
+        <h2 className="font-serif text-2xl font-bold text-ink">Settings</h2>
+        <p className="mt-1 text-sm text-ink/55">Shipping charges and author-application requirements.</p>
+      </div>
 
-      <div className="mt-6">
+      <section>
         <h3 className="mb-3 font-serif text-lg font-bold text-ink">Shipping</h3>
         <AdminShippingForm
           standardChargeRupees={cfg.standardCharge / 100}
           freeAboveRupees={cfg.freeAbove / 100}
         />
-      </div>
+        <p className="mt-3 max-w-md text-xs text-ink/45">
+          GST is applied automatically: 0% on books, 18% on services.
+        </p>
+      </section>
 
-      <p className="mt-6 max-w-md text-xs text-ink/45">
-        GST is applied automatically: 0% on books, 18% on services. Distance/zone-based shipping and
-        promotions can be added here later.
-      </p>
+      <section>
+        <h3 className="mb-3 font-serif text-lg font-bold text-ink">Author application</h3>
+        <p className="mb-3 max-w-md text-sm text-ink/55">Choose which details applicants must provide.</p>
+        <AdminAuthorConfigForm requireAadhaar={authorCfg.requireAadhaar} requireManuscript={authorCfg.requireManuscript} />
+      </section>
     </div>
   );
 }

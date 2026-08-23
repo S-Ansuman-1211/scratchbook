@@ -32,7 +32,7 @@ export default async function HomePage() {
           <div className="flex flex-col justify-center">
             <span className="eyebrow">
               ✦ Free author mentorship consultation this month -{" "}
-              <Link href="/signup?role=AUTHOR" className="font-semibold text-gold underline-offset-2 hover:underline">
+              <Link href="/become-author" className="font-semibold text-gold underline-offset-2 hover:underline">
                 claim your slot
               </Link>
             </span>
@@ -50,7 +50,7 @@ export default async function HomePage() {
               <Link href="/books" className="btn-primary px-7 py-3 text-base">
                 Shop books
               </Link>
-              <Link href="/signup?role=AUTHOR" className="btn-outline px-7 py-3 text-base">
+              <Link href="/become-author" className="btn-outline px-7 py-3 text-base">
                 Start publishing →
               </Link>
             </div>

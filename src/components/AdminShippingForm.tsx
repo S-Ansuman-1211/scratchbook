@@ -19,8 +19,10 @@ export default function AdminShippingForm({
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        standardChargeRupees: Number(standard) || 0,
-        freeAboveRupees: Number(freeAbove) || 0,
+        shipping: {
+          standardChargeRupees: Number(standard) || 0,
+          freeAboveRupees: Number(freeAbove) || 0,
+        },
       }),
     });
     setState(res.ok ? "saved" : "error");

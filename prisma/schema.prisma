@@ -28,13 +28,39 @@ model User {
   // Set when a user applies to become an author. They stay a CUSTOMER until an
   // admin approves the request (which promotes them to AUTHOR + creates a profile).
   authorRequestedAt DateTime?
+  emailConsent      Boolean   @default(false) // agreed to receive emails/updates
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  authorProfile AuthorProfile?
-  orders        Order[]
-  cart          CartItem[]
-  blogComments  BlogComment[]
+  authorProfile      AuthorProfile?
+  authorApplications AuthorApplication[]
+  orders             Order[]
+  cart               CartItem[]
+  blogComments       BlogComment[]
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// A customer's application to become an author (details + manuscript for review).
+model AuthorApplication {
+  id            String            @id @default(cuid())
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  phone         String
+  email         String
+  aadhaar       String? // optional government ID
+  bio           String?           @db.Text
+  genre         String? // writing genre / category
+  manuscriptUrl String? // uploaded sample manuscript (PDF/DOC)
+  status        ApplicationStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+
+  @@index([userId])
 }
 
 // Extra profile data for users with role = AUTHOR
