@@ -21,6 +21,24 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* News carousel - directly below the navbar (only when admin has published news) */}
+      {news.length > 0 && (
+        <section className="border-b border-line bg-cream py-8">
+          <div className="container-x">
+            <div className="mb-5">
+              <h2 className="flex items-center gap-2 font-serif text-xl font-bold text-ink">
+                <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">News</span>
+                Latest updates
+              </h2>
+            </div>
+            <NewsCarousel items={news.map((n) => ({ id: n.id, title: n.title, summary: n.summary, imageUrl: n.imageUrl, linkUrl: n.linkUrl }))} />
+            <div className="mt-2 text-right">
+              <Link href="/news" className="text-sm font-semibold text-brand hover:text-brand-dark">View all news →</Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* HERO */}
       <section className="relative overflow-hidden bg-paper">
         {/* soft decorative glows - indigo, purple & orange */}
@@ -131,22 +149,6 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
-
-      {/* News slider (only when the admin has published news) */}
-      {news.length > 0 && (
-        <section className="border-y border-line bg-cream py-16">
-          <div className="container-x">
-            <div className="mb-10 flex items-end justify-between">
-              <div>
-                <span className="eyebrow">Latest</span>
-                <h2 className="mt-2 font-serif text-3xl font-semibold text-ink">News &amp; Updates</h2>
-              </div>
-              <Link href="/news" className="text-sm font-semibold text-brand hover:text-brand-dark">View all →</Link>
-            </div>
-            <NewsCarousel items={news.map((n) => ({ id: n.id, title: n.title, summary: n.summary, imageUrl: n.imageUrl, linkUrl: n.linkUrl }))} />
-          </div>
-        </section>
-      )}
 
       {/* Published books - buy now */}
       <BookRow
