@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 export const metadata = { title: "News | ScratchBook Publications" };
+export const revalidate = 60;
 
 export default async function NewsPage() {
   const items = await prisma.news

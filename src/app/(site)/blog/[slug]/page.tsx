@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { LikeButton, Comments } from "@/components/BlogInteractions";
 
+export const revalidate = 60;
+
 async function getPost(slug: string) {
   return prisma.blogPost
     .findUnique({

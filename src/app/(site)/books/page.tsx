@@ -5,6 +5,7 @@ import BookCover from "@/components/BookCover";
 import AddToCart from "@/components/AddToCart";
 
 export const metadata = { title: "Books | ScratchBook Publications" };
+export const revalidate = 60;
 
 export default async function BooksPage() {
   const books = await prisma.book

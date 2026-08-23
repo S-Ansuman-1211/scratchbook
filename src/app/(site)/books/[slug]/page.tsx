@@ -6,6 +6,8 @@ import BookCover from "@/components/BookCover";
 import BookPurchase from "@/components/BookPurchase";
 import ShareButton from "@/components/ShareButton";
 
+export const revalidate = 60;
+
 async function getBook(slug: string) {
   return prisma.book
     .findUnique({ where: { slug }, include: { author: true } })

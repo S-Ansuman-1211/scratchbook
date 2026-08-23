@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 export const metadata = { title: "Blog | ScratchBook Publications" };
+export const revalidate = 60;
 
 export default async function BlogPage() {
   const posts = await prisma.blogPost

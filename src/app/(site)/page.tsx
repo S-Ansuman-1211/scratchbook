@@ -7,6 +7,9 @@ import LaunchCard from "@/components/LaunchCard";
 import NewsCarousel from "@/components/NewsCarousel";
 import { LAUNCHES } from "@/data/launches";
 
+// Revalidate so admin content (news, books) appears without a redeploy.
+export const revalidate = 60;
+
 // Home page - premium e-commerce storefront for ScratchBook Publications.
 export default async function HomePage() {
   const upcoming = await prisma.book

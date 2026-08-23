@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import ParticipateForm from "@/components/ParticipateForm";
 
 export const metadata = { title: "Events & Competitions | ScratchBook Publications" };
+export const revalidate = 60;
 
 type EventCard = { id?: string; title: string; type: string; description: string | null; bannerUrl?: string | null };
 

@@ -4,6 +4,7 @@ import { formatINR } from "@/lib/money";
 import MagazineRequestForm from "@/components/MagazineRequestForm";
 
 export const metadata = { title: "Magazine | ScratchBook Publications" };
+export const revalidate = 60;
 
 export default async function MagazinePage() {
   const magazines = await prisma.magazine
