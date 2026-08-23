@@ -1,6 +1,6 @@
-// Services catalog - transcribed from "Website Flow - 2026" doc.
-// Prices that are explicitly listed in the doc are included (in rupees).
-// Where the doc gives no price, the item is shown as "Enquire".
+// Services catalog - transcribed from the SBSP packages doc.
+// Prices that are explicitly listed are included (in rupees); otherwise the card
+// shows an "Enquire pricing" button.
 
 export type PriceTier = { label: string; rupees: number };
 
@@ -21,18 +21,6 @@ export type ServiceGroup = {
 };
 
 export const SERVICE_GROUPS: ServiceGroup[] = [
-  {
-    slug: "workshops-mentorship",
-    title: "Workshops & Mentorship",
-    blurb:
-      "Not everything can be learned from school, the internet or the library. Sometimes the only way to advance is to learn directly from a mentor.",
-    items: [
-      { name: "Anthology writing workshop", description: "Learn to compile stories, prose, essays or poetry professionally and choose a strong book theme." },
-      { name: "Solo book writing workshop", description: "Lectures and writing exercises covering everything needed to write a book to publishing standard." },
-      { name: "Personal mentorship for anthologies", description: "Guidance on choosing co-authors, taking submissions and formatting the manuscript." },
-      { name: "Personal mentorship for solo books", description: "A professional writer mentors you through the art of story-telling." },
-    ],
-  },
   {
     slug: "book-publishing",
     title: "Book Publishing",
@@ -62,60 +50,33 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
     ],
     note: "+ ₹449 for books exceeding the package's page limit. Illustrations and AI/customized covers are chargeable extra.",
   },
+
+  // ── ScratchBook Special Services (SBSP 1-10) as detailed sections ──
   {
-    slug: "special-services",
-    title: "ScratchBook Special Services (SBSP)",
-    blurb: "Bespoke, customisable service bundles you can add to any package. Buy according to the needs of your book.",
+    slug: "workshops",
+    title: "Workshops",
+    blurb: "Learn the craft directly from professionals through hands-on writing workshops.",
     items: [
-      { name: "Workshops", description: "Anthology writing & solo book writing workshops." },
-      { name: "Mentorship", description: "Personal mentorship for anthologies and solo books." },
-      { name: "Branding Services", description: "Personal Branding (3 months) and Page Branding / copywriting for posters & social posts." },
-      { name: "Writing Services", description: "Content & copywriting, story/script-to-book, idea-to-book, audio books, and language translation.", note: "Language translation of a book: ₹2,50,000." },
-      { name: "Digital Package", description: "YouTube interview & review, FM session, newspaper article, local hoarding/posters." },
-      { name: "Promotional Package", description: "Exclusive book reading, digital promotions, Google Ads & SEO, critic analysis, media-house reviews." },
-      { name: "Post-release Services", description: "Giveaways, gift vouchers, posters, reviews, ratings, trailers, live & author interviews, buyback." },
-      { name: "Appreciative Services", description: "Google features & snippets, Google News, world-record certificate, celebrity appreciation, national magazine feature." },
-      { name: "Podcasting Services", price: 999, description: "Discord, YouTube, Spotify, FM, Apple/Google Podcast and more.", note: "Pack 1 starts at ₹999." },
-      { name: "Token of Love", description: "Customized bookmarks, illustrations, author notes, dedicated memoirs and dedications." },
+      { name: "Anthology writing workshop", description: "Learn to compile stories, prose, essays or poetry professionally and choose a strong book theme." },
+      { name: "Solo book writing workshop", description: "Lectures and writing exercises covering everything needed to write a book to publishing standard." },
+    ],
+  },
+  {
+    slug: "mentorship",
+    title: "Mentorship",
+    blurb: "Personal, one-on-one mentorship to guide you from the first idea to a finished manuscript.",
+    items: [
+      { name: "Personal mentorship for anthologies", description: "Guidance on choosing co-authors, taking submissions and formatting the manuscript." },
+      { name: "Personal mentorship for solo books", description: "A professional writer mentors you through the art of story-telling." },
     ],
   },
   {
     slug: "branding",
-    title: "Branding",
-    blurb:
-      "The digital era is ruled by those with the most value. A brand is the new way of building trust - through consistency and genuineness.",
+    title: "Branding Services",
+    blurb: "A brand is the new way of building trust - through consistency and genuineness.",
     items: [
-      { name: "Personal Branding" },
-      { name: "Page Branding" },
-    ],
-  },
-  {
-    slug: "digital-promotions",
-    title: "Digital Promotions",
-    blurb: "Target selected audiences, and choose when and where - unlike traditional promotions.",
-    items: [
-      { name: "One YouTube interview" },
-      { name: "YouTube review" },
-      { name: "FM session" },
-      { name: "Article on Newspaper" },
-      { name: "Local hoarding or posters in hometown" },
-      { name: "Exclusive Book Reading session" },
-      { name: "Digital Promotions on Publication's social pages" },
-      { name: "Google Ads and SEO" },
-      { name: "Analysis by a critic" },
-      { name: "Reviews by known book/media houses" },
-    ],
-  },
-  {
-    slug: "recognition",
-    title: "Recognition Packages",
-    blurb: "Celebrate and certify the author's achievements.",
-    items: [
-      { name: "Digital and Hardcopy certifications" },
-      { name: "Medals and Trophies" },
-      { name: "Push into Best-Selling authors" },
-      { name: "Featuring Author and Book on Google" },
-      { name: "Chance to apply for records" },
+      { name: "Personal Branding", description: "Build your personal author brand over a period of 3 months." },
+      { name: "Page Branding", description: "Copywriting for posters and social media posts." },
     ],
   },
   {
@@ -126,15 +87,39 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { name: "Content writing" },
       { name: "Copywriting" },
       { name: "Conversion of story/script into a book" },
-      { name: "Language translation of the book" },
+      { name: "Language translation of the book", description: "Translate your book into another language.", note: "Language translation of a book: ₹2,50,000." },
       { name: "Development from idea to book" },
       { name: "Conversion into an Audio Book" },
     ],
   },
   {
+    slug: "digital-package",
+    title: "Digital Package",
+    blurb: "Reach selected audiences at the right time and place with targeted digital promotions.",
+    items: [
+      { name: "One YouTube interview" },
+      { name: "YouTube review" },
+      { name: "FM session" },
+      { name: "Article on Newspaper" },
+      { name: "Local hoarding or posters in hometown" },
+    ],
+  },
+  {
+    slug: "promotional-package",
+    title: "Promotional Package",
+    blurb: "Amplify your book's reach with promotions, SEO and expert reviews.",
+    items: [
+      { name: "Exclusive Book Reading session" },
+      { name: "Digital Promotions on Publication's social pages" },
+      { name: "Google Ads and SEO" },
+      { name: "Analysis by a critic" },
+      { name: "Reviews by known book/media houses" },
+    ],
+  },
+  {
     slug: "post-release-promotions",
     title: "Post-Release Promotions",
-    blurb: "A set of 12 customisable services. Prices below are exactly as quoted by ScratchBook (book cost excluded where noted).",
+    blurb: "A set of customisable services. Prices below are exactly as quoted by ScratchBook (book cost excluded where noted).",
     items: [
       { name: "Giveaway", description: "Host a giveaway to reach a wider audience.", tiers: [{ label: "3 slots", rupees: 300 }], note: "Per slot ₹100. 3 slots suggested." },
       { name: "Gift Voucher", description: "Hosted from your or a reviewer's account.", tiers: [{ label: "2 slots", rupees: 100 }] },
@@ -153,8 +138,37 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
     ],
   },
   {
+    slug: "recognition",
+    title: "Appreciative & Recognition Services",
+    blurb: "Celebrate and certify the author's achievements.",
+    items: [
+      { name: "Digital and Hardcopy certifications" },
+      { name: "Medals and Trophies" },
+      { name: "Push into Best-Selling authors" },
+      { name: "Featuring Author and Book on Google" },
+      { name: "Chance to apply for records" },
+    ],
+  },
+  {
+    slug: "podcasting-services",
+    title: "Podcasting Services",
+    blurb: "Get your book and story featured across major podcast platforms.",
+    note: "Pack 1 starts at ₹999.",
+    items: [
+      { name: "Discord" },
+      { name: "YouTube" },
+      { name: "Spotify" },
+      { name: "FM version" },
+      { name: "Listen Notes" },
+      { name: "Apple Podcast" },
+      { name: "Google Podcast" },
+      { name: "Pocket Cast" },
+      { name: "Podcast (iOS)" },
+    ],
+  },
+  {
     slug: "gifts-dedications",
-    title: "Gifts & Dedications",
+    title: "Token of Love (Gifts & Dedications)",
     blurb: "Thoughtful add-ons to make every book personal.",
     items: [
       { name: "Customized Bookmarks" },
