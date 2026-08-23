@@ -11,59 +11,49 @@ export type NewsItem = {
   linkUrl: string | null;
 };
 
-// Horizontally sliding news cards with prev/next controls.
+// Compact, mostly-text sliding news strip (small thumbnail + headline).
 export default function NewsCarousel({ items }: { items: NewsItem[] }) {
   const track = useRef<HTMLDivElement>(null);
 
   function scrollBy(dir: 1 | -1) {
-    track.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
+    track.current?.scrollBy({ left: dir * 300, behavior: "smooth" });
   }
 
   if (items.length === 0) return null;
 
   return (
-    <div className="relative">
-      {/* Controls */}
-      <div className="absolute -top-14 right-0 hidden gap-2 sm:flex">
-        <button onClick={() => scrollBy(-1)} aria-label="Previous" className="grid h-9 w-9 place-items-center rounded-full border border-line bg-white text-ink/60 hover:border-brand hover:text-brand">‹</button>
-        <button onClick={() => scrollBy(1)} aria-label="Next" className="grid h-9 w-9 place-items-center rounded-full border border-line bg-white text-ink/60 hover:border-brand hover:text-brand">›</button>
-      </div>
+    <div className="flex items-center gap-2">
+      <button onClick={() => scrollBy(-1)} aria-label="Previous" className="hidden h-8 w-8 shrink-0 place-items-center rounded-full border border-line bg-white text-ink/60 hover:border-brand hover:text-brand sm:grid">‹</button>
 
       <div
         ref={track}
-        className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex flex-1 snap-x gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((n) => {
-          const card = (
-            <div className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-soft transition-all hover:-translate-y-1 hover:shadow-lift">
-              <div className="aspect-[16/10] overflow-hidden bg-gradient-to-br from-ink to-[#2a2740]">
+          const inner = (
+            <div className="flex h-14 w-[300px] shrink-0 snap-start items-center gap-3 rounded-full border border-line bg-white pr-4 shadow-soft transition hover:border-brand/40 hover:shadow-lift">
+              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-ink to-[#2a2740]">
                 {n.imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={n.imageUrl} alt={n.title} className="h-full w-full object-cover" />
+                  <img src={n.imageUrl} alt="" className="h-full w-full object-cover" />
                 )}
               </div>
-              <div className="flex flex-1 flex-col p-4">
-                <h3 className="font-serif font-bold text-ink">{n.title}</h3>
-                {n.summary && <p className="mt-1 line-clamp-3 text-sm text-ink/60">{n.summary}</p>}
-                {n.linkUrl && <span className="mt-3 text-xs font-semibold text-brand">Read more →</span>}
-              </div>
+              <p className="line-clamp-2 text-sm font-semibold leading-snug text-ink">{n.title}</p>
             </div>
           );
-          return (
-            <div key={n.id} className="w-[300px] shrink-0 snap-start">
-              {n.linkUrl ? (
-                n.linkUrl.startsWith("http") ? (
-                  <a href={n.linkUrl} target="_blank" rel="noreferrer" className="block h-full">{card}</a>
-                ) : (
-                  <Link href={n.linkUrl} className="block h-full">{card}</Link>
-                )
-              ) : (
-                card
-              )}
-            </div>
+          return n.linkUrl ? (
+            n.linkUrl.startsWith("http") ? (
+              <a key={n.id} href={n.linkUrl} target="_blank" rel="noreferrer">{inner}</a>
+            ) : (
+              <Link key={n.id} href={n.linkUrl}>{inner}</Link>
+            )
+          ) : (
+            <div key={n.id}>{inner}</div>
           );
         })}
       </div>
+
+      <button onClick={() => scrollBy(1)} aria-label="Next" className="hidden h-8 w-8 shrink-0 place-items-center rounded-full border border-line bg-white text-ink/60 hover:border-brand hover:text-brand sm:grid">›</button>
     </div>
   );
 }

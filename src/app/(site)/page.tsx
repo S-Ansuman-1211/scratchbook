@@ -24,19 +24,16 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* News carousel - directly below the navbar (only when admin has published news) */}
+      {/* Compact news strip - directly below the navbar (only when admin has published news) */}
       {news.length > 0 && (
-        <section className="border-b border-line bg-cream py-8">
-          <div className="container-x">
-            <div className="mb-5">
-              <h2 className="flex items-center gap-2 font-serif text-xl font-bold text-ink">
-                <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">News</span>
-                Latest updates
-              </h2>
-            </div>
-            <NewsCarousel items={news.map((n) => ({ id: n.id, title: n.title, summary: n.summary, imageUrl: n.imageUrl, linkUrl: n.linkUrl }))} />
-            <div className="mt-2 text-right">
-              <Link href="/news" className="text-sm font-semibold text-brand hover:text-brand-dark">View all news →</Link>
+        <section className="border-b border-line bg-cream py-3">
+          <div className="container-x flex items-center gap-4">
+            <span className="hidden shrink-0 items-center gap-2 sm:flex">
+              <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">News</span>
+              <Link href="/news" className="text-xs font-semibold text-ink/50 hover:text-brand">All →</Link>
+            </span>
+            <div className="min-w-0 flex-1">
+              <NewsCarousel items={news.map((n) => ({ id: n.id, title: n.title, summary: n.summary, imageUrl: n.imageUrl, linkUrl: n.linkUrl }))} />
             </div>
           </div>
         </section>
