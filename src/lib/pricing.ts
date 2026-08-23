@@ -13,6 +13,18 @@ export const DEFAULT_SHIPPING: ShippingConfig = {
   freeAbove: 50000, // ₹500
 };
 
+export type PromoConfig = {
+  enabled: boolean;
+  threshold: number; // paise — order value at/above which the promo applies
+  percent: number; // discount %
+};
+
+export const DEFAULT_PROMO: PromoConfig = {
+  enabled: true,
+  threshold: 100000, // ₹1000
+  percent: 10,
+};
+
 export type PricedItem = {
   kind: "BOOK" | "SERVICE" | "MAGAZINE";
   unitPrice: number; // paise
@@ -27,18 +39,32 @@ function isPhysical(item: PricedItem): boolean {
   return true;
 }
 
-export function computeTotals(items: PricedItem[], shipping: ShippingConfig) {
+export function computeTotals(
+  items: PricedItem[],
+  shipping: ShippingConfig,
+  opts?: { promo?: PromoConfig; userDiscountPercent?: number }
+) {
   const subtotal = items.reduce((s, i) => s + i.unitPrice * i.quantity, 0);
 
-  // GST only on service line items.
+  // Discount = the better of the auto order-value promo and the user's personal
+  // discount (they don't stack).
+  const promo = opts?.promo;
+  const promoPct = promo?.enabled && subtotal >= promo.threshold ? promo.percent : 0;
+  const userPct = Math.max(0, Math.min(100, opts?.userDiscountPercent ?? 0));
+  const discountPct = Math.max(promoPct, userPct);
+  const discount = Math.round(subtotal * (discountPct / 100));
+  const discounted = subtotal - discount;
+
+  // GST only on service line items (computed on the discounted service portion).
   const serviceTotal = items
     .filter((i) => i.kind === "SERVICE")
     .reduce((s, i) => s + i.unitPrice * i.quantity, 0);
-  const tax = Math.round(serviceTotal * GST_RATE);
+  const serviceAfterDiscount = subtotal > 0 ? Math.round(serviceTotal * (discounted / subtotal)) : 0;
+  const tax = Math.round(serviceAfterDiscount * GST_RATE);
 
-  // Shipping only when there's a physical item; free above threshold.
+  // Shipping only when there's a physical item; free above threshold (by subtotal).
   const hasPhysical = items.some(isPhysical);
   const shippingCost = !hasPhysical ? 0 : subtotal >= shipping.freeAbove ? 0 : shipping.standardCharge;
 
-  return { subtotal, tax, shippingCost, total: subtotal + tax + shippingCost };
+  return { subtotal, discount, discountPct, tax, shippingCost, total: discounted + tax + shippingCost };
 }

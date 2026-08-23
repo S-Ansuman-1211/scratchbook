@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { razorpay, isRazorpayConfigured } from "@/lib/razorpay";
-import { getShippingConfig } from "@/lib/settings";
+import { getShippingConfig, getPromoConfig } from "@/lib/settings";
 import { computeTotals, type PricedItem } from "@/lib/pricing";
 import { z } from "zod";
 
@@ -53,15 +53,22 @@ export async function POST(req: Request) {
     );
   }
 
-  // Server-authoritative totals (GST on services + shipping rules).
-  const shippingCfg = await getShippingConfig();
+  // Server-authoritative totals (discount + GST on services + shipping rules).
+  const [shippingCfg, promoCfg, dbUser] = await Promise.all([
+    getShippingConfig(),
+    getPromoConfig(),
+    prisma.user.findUnique({ where: { id: session.user.id }, select: { discountPercent: true } }),
+  ]);
   const priced: PricedItem[] = cart.map((c) => ({
     kind: c.kind,
     unitPrice: c.unitPrice,
     quantity: c.quantity,
     meta: (c.meta as { format?: string } | null) ?? undefined,
   }));
-  const { subtotal, tax, shippingCost, total } = computeTotals(priced, shippingCfg);
+  const { subtotal, discount, tax, shippingCost, total } = computeTotals(priced, shippingCfg, {
+    promo: promoCfg,
+    userDiscountPercent: dbUser?.discountPercent ?? 0,
+  });
 
   // Create the Razorpay order (amount in paise, incl. tax + shipping).
   const rzpOrder = await razorpay.orders.create({
@@ -75,6 +82,7 @@ export async function POST(req: Request) {
       userId: session.user.id,
       status: "PENDING",
       subtotal,
+      discountAmount: discount,
       taxAmount: tax,
       shippingCost,
       totalAmount: total,

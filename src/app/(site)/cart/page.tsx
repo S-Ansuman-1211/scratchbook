@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Script from "next/script";
 import { formatINR } from "@/lib/money";
-import { computeTotals, DEFAULT_SHIPPING, type ShippingConfig, type PricedItem } from "@/lib/pricing";
+import { computeTotals, DEFAULT_SHIPPING, DEFAULT_PROMO, type ShippingConfig, type PromoConfig, type PricedItem } from "@/lib/pricing";
 
 type CartItem = {
   id: string;
@@ -32,6 +32,8 @@ export default function CartPage() {
   const router = useRouter();
   const [items, setItems] = useState<CartItem[]>([]);
   const [shipping, setShipping] = useState<ShippingConfig>(DEFAULT_SHIPPING);
+  const [promo, setPromo] = useState<PromoConfig>(DEFAULT_PROMO);
+  const [userDiscount, setUserDiscount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [paying, setPaying] = useState(false);
   const [message, setMessage] = useState("");
@@ -43,6 +45,8 @@ export default function CartPage() {
       const data = await res.json();
       setItems(data.items);
       if (data.shipping) setShipping(data.shipping);
+      if (data.promo) setPromo(data.promo);
+      setUserDiscount(data.userDiscountPercent ?? 0);
     }
     setLoading(false);
   }, []);
@@ -57,7 +61,7 @@ export default function CartPage() {
   }, [session?.user?.name]);
 
   const priced: PricedItem[] = items.map((i) => ({ kind: i.kind, unitPrice: i.unitPrice, quantity: i.quantity, meta: i.meta }));
-  const totals = computeTotals(priced, shipping);
+  const totals = computeTotals(priced, shipping, { promo, userDiscountPercent: userDiscount });
 
   async function removeItem(id: string) {
     await fetch(`/api/cart?id=${id}`, { method: "DELETE" });
@@ -178,6 +182,11 @@ export default function CartPage() {
             {/* Price breakdown */}
             <div className="card space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-ink/60">Subtotal</span><span>{formatINR(totals.subtotal)}</span></div>
+              {totals.discount > 0 && (
+                <div className="flex justify-between text-emerald-600">
+                  <span>Discount ({totals.discountPct}% off)</span><span>- {formatINR(totals.discount)}</span>
+                </div>
+              )}
               {totals.tax > 0 && <div className="flex justify-between"><span className="text-ink/60">GST (18% on services)</span><span>{formatINR(totals.tax)}</span></div>}
               <div className="flex justify-between">
                 <span className="text-ink/60">Shipping</span>
@@ -186,6 +195,9 @@ export default function CartPage() {
               <div className="mt-2 flex justify-between border-t border-line pt-2 text-lg font-bold">
                 <span>Total</span><span className="text-brand">{formatINR(totals.total)}</span>
               </div>
+              <p className="pt-1 text-center text-xs text-ink/45">
+                <Link href="/request-discount" className="hover:text-brand">Request a discount →</Link>
+              </p>
             </div>
 
             {/* Delivery details */}

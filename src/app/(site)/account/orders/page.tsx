@@ -75,8 +75,9 @@ export default async function MyOrdersPage({
                 ))}
               </ul>
 
-              {(o.taxAmount > 0 || o.shippingCost > 0) && (
+              {(o.discountAmount > 0 || o.taxAmount > 0 || o.shippingCost > 0) && (
                 <div className="mt-2 space-y-0.5 text-xs text-ink/50">
+                  {o.discountAmount > 0 && <div className="flex justify-between text-emerald-600"><span>Discount</span><span>- {formatINR(o.discountAmount)}</span></div>}
                   {o.taxAmount > 0 && <div className="flex justify-between"><span>GST</span><span>{formatINR(o.taxAmount)}</span></div>}
                   <div className="flex justify-between"><span>Shipping</span><span>{o.shippingCost === 0 ? "Free" : formatINR(o.shippingCost)}</span></div>
                 </div>

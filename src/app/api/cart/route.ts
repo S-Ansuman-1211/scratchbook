@@ -2,18 +2,20 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getShippingConfig } from "@/lib/settings";
+import { getShippingConfig, getPromoConfig } from "@/lib/settings";
 import { z } from "zod";
 
-// GET  /api/cart  -> current user's cart + the shipping config (for totals)
+// GET  /api/cart  -> current user's cart + pricing config (shipping, promo, personal discount)
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  const [items, shipping] = await Promise.all([
+  const [items, shipping, promo, user] = await Promise.all([
     prisma.cartItem.findMany({ where: { userId: session.user.id } }),
     getShippingConfig(),
+    getPromoConfig(),
+    prisma.user.findUnique({ where: { id: session.user.id }, select: { discountPercent: true } }),
   ]);
-  return NextResponse.json({ items, shipping });
+  return NextResponse.json({ items, shipping, promo, userDiscountPercent: user?.discountPercent ?? 0 });
 }
 
 const addSchema = z.object({

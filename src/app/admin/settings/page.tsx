@@ -1,9 +1,10 @@
-import { getShippingConfig, getAuthorAppConfig } from "@/lib/settings";
+import { getShippingConfig, getAuthorAppConfig, getPromoConfig } from "@/lib/settings";
 import AdminShippingForm from "@/components/AdminShippingForm";
 import AdminAuthorConfigForm from "@/components/AdminAuthorConfigForm";
+import AdminPromoForm from "@/components/AdminPromoForm";
 
 export default async function AdminSettings() {
-  const [cfg, authorCfg] = await Promise.all([getShippingConfig(), getAuthorAppConfig()]);
+  const [cfg, authorCfg, promo] = await Promise.all([getShippingConfig(), getAuthorAppConfig(), getPromoConfig()]);
 
   return (
     <div className="space-y-10">
@@ -21,6 +22,12 @@ export default async function AdminSettings() {
         <p className="mt-3 max-w-md text-xs text-ink/45">
           GST is applied automatically: 0% on books, 18% on services.
         </p>
+      </section>
+
+      <section>
+        <h3 className="mb-3 font-serif text-lg font-bold text-ink">Discount &amp; promotions</h3>
+        <p className="mb-3 max-w-md text-sm text-ink/55">Automatic discount applied to every qualifying order.</p>
+        <AdminPromoForm enabled={promo.enabled} thresholdRupees={promo.threshold / 100} percent={promo.percent} />
       </section>
 
       <section>

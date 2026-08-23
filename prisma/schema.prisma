@@ -29,14 +29,30 @@ model User {
   // admin approves the request (which promotes them to AUTHOR + creates a profile).
   authorRequestedAt DateTime?
   emailConsent      Boolean   @default(false) // agreed to receive emails/updates
+  discountPercent   Int       @default(0) // admin-granted personal discount (%)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
   authorProfile      AuthorProfile?
   authorApplications AuthorApplication[]
+  discountRequests   DiscountRequest[]
   orders             Order[]
   cart               CartItem[]
   blogComments       BlogComment[]
+}
+
+// A user/author asks for a discount; admin grants a percentage or rejects.
+model DiscountRequest {
+  id             String            @id @default(cuid())
+  userId         String
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message        String            @db.Text
+  bookTitle      String?
+  status         ApplicationStatus @default(PENDING)
+  grantedPercent Int? // set when granted
+  createdAt      DateTime          @default(now())
+
+  @@index([userId])
 }
 
 enum ApplicationStatus {
@@ -322,9 +338,10 @@ model Order {
   user            User        @relation(fields: [userId], references: [id])
   status          OrderStatus @default(PENDING)
   subtotal        Int         @default(0) // paise, before tax/shipping
+  discountAmount  Int         @default(0) // paise, promo / personal discount
   taxAmount       Int         @default(0) // paise, GST on services
   shippingCost    Int         @default(0) // paise
-  totalAmount     Int // paise (subtotal + tax + shipping)
+  totalAmount     Int // paise (subtotal - discount + tax + shipping)
   currency        String      @default("INR")
 
   // Razorpay references
