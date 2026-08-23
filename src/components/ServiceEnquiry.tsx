@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 // "Enquire pricing" button + modal for a service. Posts the enquiry to the
 // contact endpoint so it lands in Admin -> Messages (with the user's email),
 // and the admin can reply / send pricing by mail.
-export default function ServiceEnquiry({ serviceName }: { serviceName: string }) {
+export default function ServiceEnquiry({ serviceName, inline = false }: { serviceName: string; inline?: boolean }) {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "saving" | "done">("idle");
@@ -37,7 +37,10 @@ export default function ServiceEnquiry({ serviceName }: { serviceName: string })
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className="btn-outline mt-3 w-full py-1.5 text-sm">
+      <button
+        onClick={() => setOpen(true)}
+        className={inline ? "btn-outline shrink-0 whitespace-nowrap px-4 py-1.5 text-sm" : "btn-outline mt-3 w-full py-1.5 text-sm"}
+      >
         Enquire pricing
       </button>
 

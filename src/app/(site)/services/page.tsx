@@ -42,33 +42,45 @@ export default function ServicesPage() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {group.items.map((item) => (
-                <div key={item.name} className="card flex flex-col">
-                  <h3 className="font-semibold text-ink">{item.name}</h3>
-                  {item.description && (
-                    <p className="mt-1 text-sm text-ink/60">{item.description}</p>
-                  )}
+              {group.items.map((item) => {
+                // Compact card = no description, no price, no tiers: heading + inline enquire button.
+                const compact = !item.description && item.price == null && !item.tiers;
+                if (compact) {
+                  return (
+                    <div key={item.name} className="card flex items-center justify-between gap-3">
+                      <h3 className="font-semibold text-ink">{item.name}</h3>
+                      <ServiceEnquiry serviceName={item.name} inline />
+                    </div>
+                  );
+                }
+                return (
+                  <div key={item.name} className="card flex flex-col">
+                    <h3 className="font-semibold text-ink">{item.name}</h3>
+                    {item.description && (
+                      <p className="mt-1 text-sm text-ink/60">{item.description}</p>
+                    )}
 
-                  {item.price != null ? (
-                    <p className="mt-3 font-serif text-2xl font-bold text-gold">
-                      ₹{item.price.toLocaleString("en-IN")}
-                    </p>
-                  ) : item.tiers ? (
-                    <ul className="mt-3 space-y-1">
-                      {item.tiers.map((t) => (
-                        <li key={t.label} className="flex justify-between text-sm">
-                          <span className="text-ink/70">{t.label}</span>
-                          <span className="font-semibold text-brand">₹{t.rupees.toLocaleString("en-IN")}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <ServiceEnquiry serviceName={item.name} />
-                  )}
+                    {item.price != null ? (
+                      <p className="mt-3 font-serif text-2xl font-bold text-gold">
+                        ₹{item.price.toLocaleString("en-IN")}
+                      </p>
+                    ) : item.tiers ? (
+                      <ul className="mt-3 space-y-1">
+                        {item.tiers.map((t) => (
+                          <li key={t.label} className="flex justify-between text-sm">
+                            <span className="text-ink/70">{t.label}</span>
+                            <span className="font-semibold text-brand">₹{t.rupees.toLocaleString("en-IN")}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <ServiceEnquiry serviceName={item.name} />
+                    )}
 
-                  {item.note && <p className="mt-2 text-xs italic text-ink/50">{item.note}</p>}
-                </div>
-              ))}
+                    {item.note && <p className="mt-2 text-xs italic text-ink/50">{item.note}</p>}
+                  </div>
+                );
+              })}
             </div>
           </section>
         ))}
