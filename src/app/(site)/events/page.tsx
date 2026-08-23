@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import ParticipateForm from "@/components/ParticipateForm";
+import EventCollaboration from "@/components/EventCollaboration";
 
 export const metadata = { title: "Events & Competitions | ScratchBook Publications" };
 export const revalidate = 60;
@@ -50,6 +51,24 @@ export default async function EventsPage() {
             <ParticipateForm event={{ id: e.id, title: e.title, type: e.type }} />
           </div>
         ))}
+      </div>
+
+      {/* Collaboration CTA - lets anyone propose co-organising an event. */}
+      <div className="mt-14 overflow-hidden rounded-2xl border border-line bg-brand-tint/40 p-8 sm:p-10">
+        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-2xl">
+            <span className="eyebrow">Partner with us</span>
+            <h2 className="mt-2 font-serif text-2xl font-bold text-ink">
+              Want to organise an event with us?
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-ink/65">
+              Colleges, communities, brands and fellow organisers - if you have an idea for a
+              contest, book launch, workshop or festival, propose a collaboration. Share your
+              details and our team will reach out to you by email to plan it together.
+            </p>
+          </div>
+          <EventCollaboration />
+        </div>
       </div>
     </div>
   );
