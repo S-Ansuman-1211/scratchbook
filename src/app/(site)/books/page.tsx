@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { formatINR } from "@/lib/money";
+import { formatINR, applyDiscount } from "@/lib/money";
 import BookCover from "@/components/BookCover";
 import AddToCart from "@/components/AddToCart";
 import WishlistButton from "@/components/WishlistButton";
@@ -32,6 +32,7 @@ export default async function BooksPage() {
         <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
           {books.map((b) => {
             const price = b.paperbackPrice ?? b.ebookPrice;
+            const discounted = applyDiscount(price, b.discountPercent);
             const isUpcoming = b.status === "UPCOMING";
             return (
               <div key={b.id} className="group flex flex-col">
@@ -43,6 +44,11 @@ export default async function BooksPage() {
                         Pre-order
                       </span>
                     )}
+                    {b.discountPercent > 0 && (
+                      <span className="absolute right-2 bottom-2 rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow">
+                        {b.discountPercent}% OFF
+                      </span>
+                    )}
                   </Link>
                   <div className="absolute right-2 top-2"><WishlistButton bookId={b.id} /></div>
                 </div>
@@ -52,13 +58,16 @@ export default async function BooksPage() {
                 </div>
                 <h3 className="mt-1.5 font-serif font-semibold text-ink line-clamp-1">{b.title}</h3>
                 {b.authorName && <p className="text-xs text-ink/50">by {b.authorName}</p>}
-                <p className="mt-0.5 text-sm font-bold text-gold">{formatINR(price)}</p>
+                <p className="mt-0.5 text-sm font-bold text-gold">
+                  {formatINR(discounted)}
+                  {b.discountPercent > 0 && <span className="ml-1.5 text-xs font-normal text-ink/40 line-through">{formatINR(price)}</span>}
+                </p>
                 <div className="mt-auto pt-3">
                   <AddToCart
                     kind="BOOK"
                     refId={b.id}
                     title={b.title}
-                    unitPrice={price}
+                    unitPrice={discounted}
                     meta={{ format: "paperback" }}
                     label={isUpcoming ? "Pre-order" : "Add to cart"}
                   />

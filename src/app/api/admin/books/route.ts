@@ -32,6 +32,7 @@ const patchSchema = z.object({
   paperbackPrice: z.number().nonnegative().nullable().optional(),
   hardcasePrice: z.number().nonnegative().nullable().optional(),
   ebookPrice: z.number().nonnegative().nullable().optional(),
+  discountPercent: z.number().int().min(0).max(100).optional(),
   coverUrl: z.string().url().nullable().optional().or(z.literal("")),
 });
 
@@ -55,6 +56,7 @@ export async function PATCH(req: Request) {
       ...(d.paperbackPrice !== undefined ? { paperbackPrice: toPaise(d.paperbackPrice) } : {}),
       ...(d.hardcasePrice !== undefined ? { hardcasePrice: toPaise(d.hardcasePrice) } : {}),
       ...(d.ebookPrice !== undefined ? { ebookPrice: toPaise(d.ebookPrice) } : {}),
+      ...(d.discountPercent !== undefined ? { discountPercent: d.discountPercent } : {}),
       ...(d.coverUrl !== undefined ? { coverUrl: d.coverUrl === "" ? null : d.coverUrl } : {}),
       ...(d.status === "PUBLISHED" ? { publishedAt: new Date() } : {}),
     },
@@ -88,6 +90,7 @@ const createSchema = z.object({
   paperbackPrice: z.number().nonnegative().nullable().optional(),
   hardcasePrice: z.number().nonnegative().nullable().optional(),
   ebookPrice: z.number().nonnegative().nullable().optional(),
+  discountPercent: z.number().int().min(0).max(100).optional(),
 });
 
 export async function POST(req: Request) {
@@ -131,6 +134,7 @@ export async function POST(req: Request) {
       paperbackPrice: toPaise(d.paperbackPrice) ?? null,
       hardcasePrice: toPaise(d.hardcasePrice) ?? null,
       ebookPrice: toPaise(d.ebookPrice) ?? null,
+      discountPercent: d.discountPercent ?? 0,
       publishedAt: d.status === "PUBLISHED" ? new Date() : null,
     },
   });

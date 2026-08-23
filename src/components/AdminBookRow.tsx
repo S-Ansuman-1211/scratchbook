@@ -10,6 +10,7 @@ type BookRow = {
   paperbackPrice: number | null;
   hardcasePrice: number | null;
   ebookPrice: number | null;
+  discountPercent: number;
   coverUrl: string | null;
 };
 
@@ -22,6 +23,7 @@ export default function AdminBookRow({ book }: { book: BookRow }) {
   const [paperback, setPaperback] = useState(paiseToRupees(book.paperbackPrice));
   const [hardcase, setHardcase] = useState(paiseToRupees(book.hardcasePrice));
   const [ebook, setEbook] = useState(paiseToRupees(book.ebookPrice));
+  const [discount, setDiscount] = useState(String(book.discountPercent ?? 0));
   const [coverUrl, setCoverUrl] = useState(book.coverUrl ?? "");
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [uploading, setUploading] = useState(false);
@@ -52,6 +54,7 @@ export default function AdminBookRow({ book }: { book: BookRow }) {
         paperbackPrice: num(paperback),
         hardcasePrice: num(hardcase),
         ebookPrice: num(ebook),
+        discountPercent: Math.max(0, Math.min(100, Math.round(Number(discount) || 0))),
         coverUrl: coverUrl.trim(),
       }),
     });
@@ -85,6 +88,7 @@ export default function AdminBookRow({ book }: { book: BookRow }) {
       <td className="px-4 py-3"><input value={paperback} onChange={(e) => setPaperback(e.target.value)} placeholder="-" className={priceInput} /></td>
       <td className="px-4 py-3"><input value={hardcase} onChange={(e) => setHardcase(e.target.value)} placeholder="-" className={priceInput} /></td>
       <td className="px-4 py-3"><input value={ebook} onChange={(e) => setEbook(e.target.value)} placeholder="-" className={priceInput} /></td>
+      <td className="px-4 py-3"><input value={discount} onChange={(e) => setDiscount(e.target.value)} placeholder="0" className="w-16 rounded-lg border border-line px-2 py-1.5 text-sm outline-none focus:border-brand" />%</td>
       <td className="px-4 py-3">
         <div className="flex items-center gap-2">
           {coverUrl ? (

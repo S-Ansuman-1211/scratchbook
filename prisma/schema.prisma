@@ -142,6 +142,7 @@ model Book {
   editionLabel String? // e.g. "1st Edition, 2026"
   mrp         Int? // printed MRP in paise (for display / strike-through)
   stock       Int? // available quantity
+  discountPercent Int @default(0) // admin discount on this book (%)
 
   // External marketplace links
   amazonUrl     String?
@@ -413,6 +414,26 @@ model NewsletterSubscriber {
   id        String   @id @default(cuid())
   email     String   @unique
   createdAt DateTime @default(now())
+}
+
+// ───────────────────────────── Collaborations (DAA, Pixcorto, ...) ─────────────────────────────
+enum CollaborationStatus {
+  ACTIVE
+  COMING_SOON
+}
+
+model Collaboration {
+  id          String              @id @default(cuid())
+  name        String
+  slug        String              @unique
+  tagline     String?
+  description String?             @db.Text
+  imageUrl    String?
+  linkUrl     String? // internal (/daa-magazine) or external
+  status      CollaborationStatus @default(ACTIVE)
+  sortOrder   Int                 @default(0)
+  published   Boolean             @default(true)
+  createdAt   DateTime            @default(now())
 }
 
 // ───────────────────────────── News (admin-managed, homepage carousel) ─────────────────────────────

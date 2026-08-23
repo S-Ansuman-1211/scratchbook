@@ -10,7 +10,7 @@ export default function AdminBookForm() {
   const [form, setForm] = useState({
     title: "", authorName: "", type: "SOLO", status: "PUBLISHED",
     language: "", genre: "", isbn: "", pages: "", sizeLabel: "", editionLabel: "", stock: "",
-    description: "", mrp: "", paperbackPrice: "", hardcasePrice: "", ebookPrice: "",
+    description: "", mrp: "", paperbackPrice: "", hardcasePrice: "", ebookPrice: "", discountPercent: "",
     amazonUrl: "", kindleUrl: "", otherStoreUrl: "",
   });
   const [coverUrl, setCoverUrl] = useState("");
@@ -49,6 +49,7 @@ export default function AdminBookForm() {
         paperbackPrice: num(form.paperbackPrice),
         hardcasePrice: num(form.hardcasePrice),
         ebookPrice: num(form.ebookPrice),
+        discountPercent: Math.max(0, Math.min(100, Math.round(Number(form.discountPercent) || 0))),
         amazonUrl: form.amazonUrl,
         kindleUrl: form.kindleUrl,
         otherStoreUrl: form.otherStoreUrl,
@@ -128,6 +129,9 @@ export default function AdminBookForm() {
           {F("Paperback", "paperbackPrice")}
           {F("Hardcase", "hardcasePrice")}
           {F("eBook", "ebookPrice")}
+        </div>
+        <div className="mt-4 max-w-[10rem]">
+          {F("Discount (%)", "discountPercent", "0")}
         </div>
       </section>
 

@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { formatINR } from "@/lib/money";
+import { formatINR, applyDiscount } from "@/lib/money";
 
-type Format = { key: "paperback" | "hardcase" | "ebook"; label: string; price: number };
+type Format = { key: "paperback" | "hardcase" | "ebook"; label: string; price: number; original: number };
 
 /**
  * Format selector + quantity + add-to-cart for a single book. Only formats
- * that have a price are shown. Adds the chosen format to /api/cart.
+ * that have a price are shown. Adds the chosen (discounted) format to /api/cart.
  */
 export default function BookPurchase({
   bookId,
@@ -17,6 +17,7 @@ export default function BookPurchase({
   paperbackPrice,
   hardcasePrice,
   ebookPrice,
+  discountPercent = 0,
   isUpcoming,
 }: {
   bookId: string;
@@ -24,15 +25,19 @@ export default function BookPurchase({
   paperbackPrice: number | null;
   hardcasePrice: number | null;
   ebookPrice: number | null;
+  discountPercent?: number;
   isUpcoming: boolean;
 }) {
   const formats = useMemo<Format[]>(() => {
     const f: Format[] = [];
-    if (paperbackPrice != null) f.push({ key: "paperback", label: "Paperback", price: paperbackPrice });
-    if (hardcasePrice != null) f.push({ key: "hardcase", label: "Hardcase", price: hardcasePrice });
-    if (ebookPrice != null) f.push({ key: "ebook", label: "eBook", price: ebookPrice });
+    const add = (key: Format["key"], label: string, p: number | null) => {
+      if (p != null) f.push({ key, label, price: applyDiscount(p, discountPercent) ?? p, original: p });
+    };
+    add("paperback", "Paperback", paperbackPrice);
+    add("hardcase", "Hardcase", hardcasePrice);
+    add("ebook", "eBook", ebookPrice);
     return f;
-  }, [paperbackPrice, hardcasePrice, ebookPrice]);
+  }, [paperbackPrice, hardcasePrice, ebookPrice, discountPercent]);
 
   const { status } = useSession();
   const router = useRouter();
@@ -98,7 +103,15 @@ export default function BookPurchase({
       <div className="mt-6 flex items-end gap-6">
         <div>
           <p className="text-xs uppercase tracking-wide text-ink/50">Price</p>
-          <p className="font-serif text-3xl font-bold text-ink">{formatINR(active.price)}</p>
+          <div className="flex items-baseline gap-2">
+            <p className="font-serif text-3xl font-bold text-ink">{formatINR(active.price)}</p>
+            {discountPercent > 0 && (
+              <>
+                <span className="text-sm text-ink/40 line-through">{formatINR(active.original)}</span>
+                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">{discountPercent}% OFF</span>
+              </>
+            )}
+          </div>
         </div>
         <div>
           <p className="label">Qty</p>

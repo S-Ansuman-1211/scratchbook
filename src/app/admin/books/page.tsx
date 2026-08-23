@@ -31,7 +31,8 @@ export default async function AdminBooks() {
                 <th className="px-4 py-3">Paperback ₹</th>
                 <th className="px-4 py-3">Hardcase ₹</th>
                 <th className="px-4 py-3">eBook ₹</th>
-                <th className="px-4 py-3">Cover URL</th>
+                <th className="px-4 py-3">Discount</th>
+                <th className="px-4 py-3">Cover</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
@@ -46,6 +47,7 @@ export default async function AdminBooks() {
                     paperbackPrice: b.paperbackPrice,
                     hardcasePrice: b.hardcasePrice,
                     ebookPrice: b.ebookPrice,
+                    discountPercent: b.discountPercent,
                     coverUrl: b.coverUrl,
                   }}
                 />

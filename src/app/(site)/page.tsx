@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { formatINR } from "@/lib/money";
+import { formatINR, applyDiscount } from "@/lib/money";
 import BookCover from "@/components/BookCover";
 import AddToCart from "@/components/AddToCart";
 import LaunchCard from "@/components/LaunchCard";
@@ -324,7 +324,7 @@ function BookRow({
 }: {
   title: string;
   subtitle: string;
-  books: { id: string; title: string; slug: string; authorName: string | null; coverUrl: string | null; paperbackPrice: number | null; ebookPrice: number | null }[];
+  books: { id: string; title: string; slug: string; authorName: string | null; coverUrl: string | null; paperbackPrice: number | null; ebookPrice: number | null; discountPercent: number }[];
   emptyText: string;
   cta: "buy" | "preorder";
   muted?: boolean;
@@ -350,20 +350,27 @@ function BookRow({
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {books.map((b) => {
               const price = b.paperbackPrice ?? b.ebookPrice;
+              const discounted = applyDiscount(price, b.discountPercent);
               return (
                 <div key={b.id} className="group flex flex-col">
-                  <Link href={`/books/${b.slug}`}>
+                  <Link href={`/books/${b.slug}`} className="relative block">
                     <BookCover title={b.title} author={b.authorName} coverUrl={b.coverUrl} className="transition-all group-hover:-translate-y-1.5 group-hover:shadow-lift" />
+                    {b.discountPercent > 0 && (
+                      <span className="absolute right-2 bottom-2 rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow">{b.discountPercent}% OFF</span>
+                    )}
                   </Link>
                   <h3 className="mt-3 font-serif font-semibold text-ink line-clamp-1">{b.title}</h3>
                   {b.authorName && <p className="text-xs text-ink/50">by {b.authorName}</p>}
-                  <p className="mt-0.5 text-sm font-bold text-gold">{formatINR(price)}</p>
+                  <p className="mt-0.5 text-sm font-bold text-gold">
+                    {formatINR(discounted)}
+                    {b.discountPercent > 0 && <span className="ml-1.5 text-xs font-normal text-ink/40 line-through">{formatINR(price)}</span>}
+                  </p>
                   <div className="mt-auto pt-3">
                     <AddToCart
                       kind="BOOK"
                       refId={b.id}
                       title={b.title}
-                      unitPrice={price}
+                      unitPrice={discounted}
                       meta={{ format: "paperback" }}
                       label={cta === "buy" ? "Add to cart" : "Pre-order"}
                     />

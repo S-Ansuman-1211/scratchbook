@@ -104,6 +104,7 @@ export default async function BookDetailPage({ params }: { params: Promise<{ slu
             paperbackPrice={book.paperbackPrice}
             hardcasePrice={book.hardcasePrice}
             ebookPrice={book.ebookPrice}
+            discountPercent={book.discountPercent}
             isUpcoming={isUpcoming}
           />
 
