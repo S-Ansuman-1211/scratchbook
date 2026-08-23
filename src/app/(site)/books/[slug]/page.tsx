@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import BookCover from "@/components/BookCover";
 import BookPurchase from "@/components/BookPurchase";
 import ShareButton from "@/components/ShareButton";
+import WishlistButton from "@/components/WishlistButton";
 
 export const revalidate = 60;
 
@@ -120,6 +121,7 @@ export default async function BookDetailPage({ params }: { params: Promise<{ slu
               </a>
             ))}
             <ShareButton title={book.title} />
+            <WishlistButton bookId={book.id} />
           </div>
 
           {/* Details table */}

@@ -38,7 +38,20 @@ model User {
   discountRequests   DiscountRequest[]
   orders             Order[]
   cart               CartItem[]
+  wishlist           WishlistItem[]
   blogComments       BlogComment[]
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookId    String
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, bookId])
+  @@index([userId])
 }
 
 // A user/author asks for a discount; admin grants a percentage or rejects.
@@ -149,6 +162,7 @@ model Book {
 
   orderItems OrderItem[]
   sales      SaleRecord[]
+  wishlistItems WishlistItem[]
 }
 
 // Aggregated sales per channel (Sales Insight section of dashboard)

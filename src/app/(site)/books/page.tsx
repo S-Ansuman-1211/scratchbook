@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/money";
 import BookCover from "@/components/BookCover";
 import AddToCart from "@/components/AddToCart";
+import WishlistButton from "@/components/WishlistButton";
 
 export const metadata = { title: "Books | ScratchBook Publications" };
 export const revalidate = 60;
@@ -34,14 +35,17 @@ export default async function BooksPage() {
             const isUpcoming = b.status === "UPCOMING";
             return (
               <div key={b.id} className="group flex flex-col">
-                <Link href={`/books/${b.slug}`} className="relative">
-                  <BookCover title={b.title} author={b.authorName} coverUrl={b.coverUrl} className="transition-all group-hover:-translate-y-1.5 group-hover:shadow-lift" />
-                  {isUpcoming && (
-                    <span className="absolute left-2 top-2 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow">
-                      Pre-order
-                    </span>
-                  )}
-                </Link>
+                <div className="relative">
+                  <Link href={`/books/${b.slug}`}>
+                    <BookCover title={b.title} author={b.authorName} coverUrl={b.coverUrl} className="transition-all group-hover:-translate-y-1.5 group-hover:shadow-lift" />
+                    {isUpcoming && (
+                      <span className="absolute left-2 top-2 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow">
+                        Pre-order
+                      </span>
+                    )}
+                  </Link>
+                  <div className="absolute right-2 top-2"><WishlistButton bookId={b.id} /></div>
+                </div>
                 <div className="mt-3 flex items-center gap-2">
                   <span className="badge">{b.type}</span>
                   {b.language && <span className="text-[11px] text-ink/40">{b.language}</span>}

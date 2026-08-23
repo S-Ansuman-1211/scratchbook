@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
+import AccountMenu from "@/components/AccountMenu";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -54,27 +55,7 @@ export default function Navbar() {
             </svg>
           </Link>
           {session?.user ? (
-            <>
-              <Link href="/account/orders" className="text-sm font-medium text-ink/70 hover:text-brand">
-                My Orders
-              </Link>
-              {session.user.role === "AUTHOR" && (
-                <Link href="/dashboard" className="text-sm font-semibold text-brand">
-                  Dashboard
-                </Link>
-              )}
-              {session.user.role === "ADMIN" && (
-                <Link href="/admin" className="text-sm font-semibold text-brand">
-                  Admin
-                </Link>
-              )}
-              <button
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="btn-outline px-4 py-1.5"
-              >
-                Sign out
-              </button>
-            </>
+            <AccountMenu />
           ) : (
             <>
               <Link href="/login" className="text-sm font-medium text-ink/70 hover:text-brand">
@@ -112,6 +93,15 @@ export default function Navbar() {
                 </Link>
               </li>
             ))}
+            {session?.user && (
+              <>
+                <li className="mt-2 border-t border-line pt-2"><Link href="/account/orders" onClick={() => setOpen(false)} className="block py-2 text-sm font-medium text-ink/80">📦 My Orders</Link></li>
+                <li><Link href="/account/wishlist" onClick={() => setOpen(false)} className="block py-2 text-sm font-medium text-ink/80">❤ My Wishlist</Link></li>
+                <li><Link href="/account/requests" onClick={() => setOpen(false)} className="block py-2 text-sm font-medium text-ink/80">📝 My Requests</Link></li>
+                {session.user.role === "AUTHOR" && <li><Link href="/dashboard" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-brand">✍️ Author Dashboard</Link></li>}
+                {session.user.role === "ADMIN" && <li><Link href="/admin" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-brand">🛠️ Admin Panel</Link></li>}
+              </>
+            )}
             <li className="mt-2 flex gap-3">
               {session?.user ? (
                 <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-outline">
