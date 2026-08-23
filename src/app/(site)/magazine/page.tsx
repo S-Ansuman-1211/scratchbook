@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/money";
+import MagazineRequestForm from "@/components/MagazineRequestForm";
 
 export const metadata = { title: "Magazine | ScratchBook Publications" };
 
@@ -19,8 +20,8 @@ export default async function MagazinePage() {
       </p>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <button className="btn-outline">Submit content for the ongoing edition</button>
-        <button className="btn-outline">Request for Collab</button>
+        <MagazineRequestForm kind="submission" />
+        <MagazineRequestForm kind="collab" />
       </div>
 
       {magazines.length === 0 ? (
