@@ -1,4 +1,5 @@
 import { SERVICE_GROUPS } from "@/data/services";
+import ServiceEnquiry from "@/components/ServiceEnquiry";
 
 export const metadata = {
   title: "Services | ScratchBook Publications",
@@ -62,7 +63,7 @@ export default function ServicesPage() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-3 text-sm font-semibold text-brand">Enquire for pricing</p>
+                    <ServiceEnquiry serviceName={item.name} />
                   )}
 
                   {item.note && <p className="mt-2 text-xs italic text-ink/50">{item.note}</p>}
