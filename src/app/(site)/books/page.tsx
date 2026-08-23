@@ -67,8 +67,8 @@ export default async function BooksPage() {
                     kind="BOOK"
                     refId={b.id}
                     title={b.title}
-                    unitPrice={discounted}
-                    meta={{ format: "paperback" }}
+                    unitPrice={price}
+                    meta={{ format: "paperback", bookDiscount: b.discountPercent }}
                     label={isUpcoming ? "Pre-order" : "Add to cart"}
                   />
                 </div>

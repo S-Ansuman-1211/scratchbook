@@ -14,7 +14,7 @@ type CartItem = {
   unitPrice: number;
   quantity: number;
   kind: "BOOK" | "SERVICE" | "MAGAZINE";
-  meta?: { format?: string } | null;
+  meta?: { format?: string; bookDiscount?: number } | null;
 };
 
 declare global {
@@ -184,7 +184,7 @@ export default function CartPage() {
               <div className="flex justify-between"><span className="text-ink/60">Subtotal</span><span>{formatINR(totals.subtotal)}</span></div>
               {totals.discount > 0 && (
                 <div className="flex justify-between text-emerald-600">
-                  <span>Discount ({totals.discountPct}% off)</span><span>- {formatINR(totals.discount)}</span>
+                  <span>Discount</span><span>- {formatINR(totals.discount)}</span>
                 </div>
               )}
               {totals.tax > 0 && <div className="flex justify-between"><span className="text-ink/60">GST (18% on services)</span><span>{formatINR(totals.tax)}</span></div>}

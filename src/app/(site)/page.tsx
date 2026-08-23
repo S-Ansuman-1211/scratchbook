@@ -370,8 +370,8 @@ function BookRow({
                       kind="BOOK"
                       refId={b.id}
                       title={b.title}
-                      unitPrice={discounted}
-                      meta={{ format: "paperback" }}
+                      unitPrice={price}
+                      meta={{ format: "paperback", bookDiscount: b.discountPercent }}
                       label={cta === "buy" ? "Add to cart" : "Pre-order"}
                     />
                   </div>

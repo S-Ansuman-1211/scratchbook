@@ -64,9 +64,11 @@ export default function BookPurchase({
         kind: "BOOK",
         refId: bookId,
         title: `${title} (${active.label})`,
-        unitPrice: active.price,
+        // Store the FULL price + the per-book discount %; the discount is applied
+        // at the order level so it can compete with (or stack on) other discounts.
+        unitPrice: active.original,
         quantity: qty,
-        meta: { format: active.key },
+        meta: { format: active.key, bookDiscount: discountPercent },
       }),
     });
     if (res.ok) {

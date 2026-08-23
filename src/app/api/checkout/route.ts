@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     kind: c.kind,
     unitPrice: c.unitPrice,
     quantity: c.quantity,
-    meta: (c.meta as { format?: string } | null) ?? undefined,
+    meta: (c.meta as { format?: string; bookDiscount?: number } | null) ?? undefined,
   }));
   const { subtotal, discount, tax, shippingCost, total } = computeTotals(priced, shippingCfg, {
     promo: promoCfg,

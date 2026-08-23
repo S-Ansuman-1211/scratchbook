@@ -23,6 +23,7 @@ const schema = z.object({
       enabled: z.boolean(),
       thresholdRupees: z.number().nonnegative(),
       percent: z.number().min(0).max(100),
+      stack: z.boolean(),
     })
     .optional(),
 });
@@ -50,6 +51,7 @@ export async function PATCH(req: Request) {
       enabled: parsed.data.promo.enabled,
       threshold: Math.round(parsed.data.promo.thresholdRupees * 100),
       percent: parsed.data.promo.percent,
+      stack: parsed.data.promo.stack,
     });
   }
 

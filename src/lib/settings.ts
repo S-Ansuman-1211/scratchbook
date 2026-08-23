@@ -32,6 +32,7 @@ export async function getPromoConfig(): Promise<PromoConfig> {
     enabled: typeof v.enabled === "boolean" ? v.enabled : DEFAULT_PROMO.enabled,
     threshold: typeof v.threshold === "number" ? v.threshold : DEFAULT_PROMO.threshold,
     percent: typeof v.percent === "number" ? v.percent : DEFAULT_PROMO.percent,
+    stack: typeof v.stack === "boolean" ? v.stack : DEFAULT_PROMO.stack,
   };
 }
 

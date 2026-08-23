@@ -27,7 +27,7 @@ export default async function AdminSettings() {
       <section>
         <h3 className="mb-3 font-serif text-lg font-bold text-ink">Discount &amp; promotions</h3>
         <p className="mb-3 max-w-md text-sm text-ink/55">Automatic discount applied to every qualifying order.</p>
-        <AdminPromoForm enabled={promo.enabled} thresholdRupees={promo.threshold / 100} percent={promo.percent} />
+        <AdminPromoForm enabled={promo.enabled} thresholdRupees={promo.threshold / 100} percent={promo.percent} stack={promo.stack} />
       </section>
 
       <section>
