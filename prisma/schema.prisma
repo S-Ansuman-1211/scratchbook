@@ -70,9 +70,11 @@ model Book {
   id          String     @id @default(cuid())
   title       String
   slug        String     @unique
-  authorName  String? // display author (real book author, may differ from platform account)
-  description String?    @db.Text
-  coverUrl    String?
+  authorName  String? // display author(s); comma-separated for multiple authors
+  description String?    @db.Text // "About the book"
+  coverUrl    String? // main / front image
+  backCoverUrl  String? // back image
+  extraImageUrl String? // optional additional image
   type        BookType   @default(SOLO)
   status      BookStatus @default(PUBLISHED)
 
@@ -82,6 +84,14 @@ model Book {
   genre       String?
   pages       Int?
   sizeLabel   String? // e.g. "5x8 in"
+  editionLabel String? // e.g. "1st Edition, 2026"
+  mrp         Int? // printed MRP in paise (for display / strike-through)
+  stock       Int? // available quantity
+
+  // External marketplace links
+  amazonUrl     String?
+  kindleUrl     String? // ebook redirect (regional books may have none)
+  otherStoreUrl String?
 
   // Pricing in paise (INR * 100)
   paperbackPrice Int? // null => format not available
@@ -185,6 +195,9 @@ model BlogPost {
   body        String        @db.Text
   coverUrl    String?
   linkUrl     String? // optional external article link
+  // Submissions from authors/customers start unpublished; admin approves what shows.
+  submittedByUserId String?
+  submittedByName   String?
   published   Boolean       @default(true)
   likes       Int           @default(0)
   publishedAt DateTime      @default(now())
@@ -342,6 +355,17 @@ model ContactMessage {
 model NewsletterSubscriber {
   id        String   @id @default(cuid())
   email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+// ───────────────────────────── News (admin-managed, homepage carousel) ─────────────────────────────
+model News {
+  id        String   @id @default(cuid())
+  title     String
+  summary   String?  @db.Text
+  imageUrl  String?
+  linkUrl   String? // optional link (internal or external)
+  published Boolean  @default(true)
   createdAt DateTime @default(now())
 }
 

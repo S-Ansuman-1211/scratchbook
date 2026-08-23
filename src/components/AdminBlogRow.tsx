@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-type Row = { id: string; title: string; published: boolean; linkUrl: string | null; createdAt: string };
+type Row = { id: string; title: string; published: boolean; linkUrl: string | null; createdAt: string; submittedByName: string | null };
 
 export default function AdminBlogRow({ post }: { post: Row }) {
   const router = useRouter();
@@ -36,6 +36,11 @@ export default function AdminBlogRow({ post }: { post: Row }) {
       <td className="px-4 py-3 font-medium">
         {post.title}
         {post.linkUrl && <span className="ml-2 text-xs text-ink/40">🔗 link</span>}
+        {post.submittedByName && (
+          <span className="ml-2 rounded-full bg-gold/15 px-2 py-0.5 text-[10px] font-semibold text-gold">
+            submitted by {post.submittedByName}
+          </span>
+        )}
       </td>
       <td className="px-4 py-3 text-ink/60">{new Date(post.createdAt).toLocaleDateString("en-IN")}</td>
       <td className="px-4 py-3">

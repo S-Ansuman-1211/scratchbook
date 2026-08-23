@@ -64,15 +64,27 @@ export async function PATCH(req: Request) {
 }
 
 // ── Create a new book ─────────────────────────────────────────────────
+const optUrl = z.string().url().optional().or(z.literal(""));
 const createSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  authorName: z.string().optional(),
+  authorName: z.string().optional(), // comma-separated for multiple authors
   description: z.string().optional(),
   language: z.string().optional(),
   genre: z.string().optional(),
+  isbn: z.string().optional(),
+  pages: z.number().int().nonnegative().nullable().optional(),
+  sizeLabel: z.string().optional(),
+  editionLabel: z.string().optional(),
+  stock: z.number().int().nonnegative().nullable().optional(),
   type: z.enum(["ANTHOLOGY", "SOLO", "BIOGRAPHY", "AUTOBIOGRAPHY"]).default("SOLO"),
   status: z.enum(["UPCOMING", "PUBLISHED", "DRAFT"]).default("PUBLISHED"),
-  coverUrl: z.string().url().optional().or(z.literal("")),
+  coverUrl: optUrl,
+  backCoverUrl: optUrl,
+  extraImageUrl: optUrl,
+  amazonUrl: optUrl,
+  kindleUrl: optUrl,
+  otherStoreUrl: optUrl,
+  mrp: z.number().nonnegative().nullable().optional(),
   paperbackPrice: z.number().nonnegative().nullable().optional(),
   hardcasePrice: z.number().nonnegative().nullable().optional(),
   ebookPrice: z.number().nonnegative().nullable().optional(),
@@ -93,6 +105,7 @@ export async function POST(req: Request) {
     slug = `${slug}-${Math.random().toString(36).slice(2, 6)}`;
   }
 
+  const emptyToNull = (s?: string) => (s ? s : null);
   const book = await prisma.book.create({
     data: {
       title: d.title,
@@ -101,9 +114,20 @@ export async function POST(req: Request) {
       description: d.description || null,
       language: d.language || null,
       genre: d.genre || null,
+      isbn: d.isbn || null,
+      pages: d.pages ?? null,
+      sizeLabel: d.sizeLabel || null,
+      editionLabel: d.editionLabel || null,
+      stock: d.stock ?? null,
       type: d.type,
       status: d.status,
-      coverUrl: d.coverUrl ? d.coverUrl : null,
+      coverUrl: emptyToNull(d.coverUrl),
+      backCoverUrl: emptyToNull(d.backCoverUrl),
+      extraImageUrl: emptyToNull(d.extraImageUrl),
+      amazonUrl: emptyToNull(d.amazonUrl),
+      kindleUrl: emptyToNull(d.kindleUrl),
+      otherStoreUrl: emptyToNull(d.otherStoreUrl),
+      mrp: toPaise(d.mrp) ?? null,
       paperbackPrice: toPaise(d.paperbackPrice) ?? null,
       hardcasePrice: toPaise(d.hardcasePrice) ?? null,
       ebookPrice: toPaise(d.ebookPrice) ?? null,

@@ -11,11 +11,13 @@ export default function ImageUpload({
   onUploaded,
   folder = "uploads",
   label = "Image",
+  endpoint = "/api/admin/upload",
 }: {
   value?: string | null;
   onUploaded: (url: string) => void;
   folder?: string;
   label?: string;
+  endpoint?: string;
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +32,7 @@ export default function ImageUpload({
     fd.append("file", file);
     fd.append("folder", folder);
 
-    const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+    const res = await fetch(endpoint, { method: "POST", body: fd });
     const data = await res.json();
     if (res.ok && data.url) {
       onUploaded(data.url);

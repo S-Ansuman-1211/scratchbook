@@ -34,7 +34,7 @@ export default async function AdminBlog() {
               {posts.map((p) => (
                 <AdminBlogRow
                   key={p.id}
-                  post={{ id: p.id, title: p.title, published: p.published, linkUrl: p.linkUrl, createdAt: p.publishedAt.toISOString() }}
+                  post={{ id: p.id, title: p.title, published: p.published, linkUrl: p.linkUrl, createdAt: p.publishedAt.toISOString(), submittedByName: p.submittedByName }}
                 />
               ))}
             </tbody>

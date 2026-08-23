@@ -10,8 +10,13 @@ export default async function BlogPage() {
 
   return (
     <div className="container-x py-16">
-      <span className="eyebrow">Stories &amp; insights</span>
-      <h1 className="mt-2 font-serif text-4xl font-semibold text-ink md:text-5xl">The ScratchBook Blog</h1>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span className="eyebrow">Stories &amp; insights</span>
+          <h1 className="mt-2 font-serif text-4xl font-semibold text-ink md:text-5xl">The ScratchBook Blog</h1>
+        </div>
+        <Link href="/blog/submit" className="btn-primary px-5 py-2.5">Write a blog</Link>
+      </div>
 
       {posts.length === 0 ? (
         <p className="mt-10 rounded-2xl border border-dashed border-line p-12 text-center text-sm text-ink/45">

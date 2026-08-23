@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import BookCover from "@/components/BookCover";
 import BookPurchase from "@/components/BookPurchase";
+import ShareButton from "@/components/ShareButton";
 
 async function getBook(slug: string) {
   return prisma.book
@@ -40,8 +41,15 @@ export default async function BookDetailPage({ params }: { params: Promise<{ slu
     ["Language", book.language],
     ["Pages", book.pages],
     ["Size", book.sizeLabel],
+    ["Edition", book.editionLabel],
     ["ISBN", book.isbn],
   ];
+
+  const stores = [
+    book.amazonUrl ? { label: "Amazon", url: book.amazonUrl } : null,
+    book.kindleUrl ? { label: "Kindle", url: book.kindleUrl } : null,
+    book.otherStoreUrl ? { label: "Other store", url: book.otherStoreUrl } : null,
+  ].filter(Boolean) as { label: string; url: string }[];
 
   return (
     <div className="container-x py-10 md:py-14">
@@ -55,9 +63,17 @@ export default async function BookDetailPage({ params }: { params: Promise<{ slu
       </nav>
 
       <div className="mt-8 grid gap-10 md:grid-cols-[380px_1fr]">
-        {/* Cover */}
+        {/* Cover + extra images */}
         <div className="md:sticky md:top-24 md:self-start">
           <BookCover title={book.title} author={authorName} coverUrl={book.coverUrl} className="mx-auto w-64 shadow-lift md:w-full" />
+          {(book.backCoverUrl || book.extraImageUrl) && (
+            <div className="mt-3 flex justify-center gap-3 md:justify-start">
+              {[book.backCoverUrl, book.extraImageUrl].filter(Boolean).map((src, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={i} src={src as string} alt={`${book.title} image ${i + 2}`} className="h-24 w-16 rounded-md border border-line object-cover" />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Info + purchase */}
@@ -87,6 +103,22 @@ export default async function BookDetailPage({ params }: { params: Promise<{ slu
             ebookPrice={book.ebookPrice}
             isUpcoming={isUpcoming}
           />
+
+          {/* Also available on + share */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            {stores.map((s) => (
+              <a
+                key={s.label}
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-ink/70 transition hover:border-brand hover:text-brand"
+              >
+                {s.label} ↗
+              </a>
+            ))}
+            <ShareButton title={book.title} />
+          </div>
 
           {/* Details table */}
           <div className="mt-10">

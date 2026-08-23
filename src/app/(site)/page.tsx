@@ -4,6 +4,7 @@ import { formatINR } from "@/lib/money";
 import BookCover from "@/components/BookCover";
 import AddToCart from "@/components/AddToCart";
 import LaunchCard from "@/components/LaunchCard";
+import NewsCarousel from "@/components/NewsCarousel";
 import { LAUNCHES } from "@/data/launches";
 
 // Home page - premium e-commerce storefront for ScratchBook Publications.
@@ -13,6 +14,9 @@ export default async function HomePage() {
     .catch(() => []);
   const published = await prisma.book
     .findMany({ where: { status: "PUBLISHED" }, take: 4, orderBy: { publishedAt: "desc" } })
+    .catch(() => []);
+  const news = await prisma.news
+    .findMany({ where: { published: true }, take: 8, orderBy: { createdAt: "desc" } })
     .catch(() => []);
 
   return (
@@ -127,6 +131,22 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* News slider (only when the admin has published news) */}
+      {news.length > 0 && (
+        <section className="border-y border-line bg-cream py-16">
+          <div className="container-x">
+            <div className="mb-10 flex items-end justify-between">
+              <div>
+                <span className="eyebrow">Latest</span>
+                <h2 className="mt-2 font-serif text-3xl font-semibold text-ink">News &amp; Updates</h2>
+              </div>
+              <Link href="/news" className="text-sm font-semibold text-brand hover:text-brand-dark">View all →</Link>
+            </div>
+            <NewsCarousel items={news.map((n) => ({ id: n.id, title: n.title, summary: n.summary, imageUrl: n.imageUrl, linkUrl: n.linkUrl }))} />
+          </div>
+        </section>
+      )}
 
       {/* Published books - buy now */}
       <BookRow
