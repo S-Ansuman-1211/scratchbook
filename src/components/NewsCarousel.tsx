@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export type NewsItem = {
@@ -11,49 +11,71 @@ export type NewsItem = {
   linkUrl: string | null;
 };
 
-// Compact, mostly-text sliding news strip (small thumbnail + headline).
+// Single-item news ticker on a dark bar. Auto-advances every few seconds,
+// pauses on hover, with prev/next controls and dots.
 export default function NewsCarousel({ items }: { items: NewsItem[] }) {
-  const track = useRef<HTMLDivElement>(null);
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
 
-  function scrollBy(dir: 1 | -1) {
-    track.current?.scrollBy({ left: dir * 300, behavior: "smooth" });
-  }
+  useEffect(() => {
+    if (items.length <= 1 || paused) return;
+    const t = setInterval(() => setI((p) => (p + 1) % items.length), 4000);
+    return () => clearInterval(t);
+  }, [items.length, paused]);
 
   if (items.length === 0) return null;
+  const n = items[Math.min(i, items.length - 1)];
+
+  const content = (
+    <div key={n.id} className="animate-newsin flex items-center gap-3">
+      <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-white/10">
+        {n.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={n.imageUrl} alt="" className="h-full w-full object-cover" />
+        )}
+      </div>
+      <p className="line-clamp-1 text-sm font-semibold text-white">{n.title}</p>
+    </div>
+  );
+
+  const item = n.linkUrl ? (
+    n.linkUrl.startsWith("http") ? (
+      <a href={n.linkUrl} target="_blank" rel="noreferrer" className="block">{content}</a>
+    ) : (
+      <Link href={n.linkUrl} className="block">{content}</Link>
+    )
+  ) : (
+    content
+  );
 
   return (
-    <div className="flex items-center gap-2">
-      <button onClick={() => scrollBy(-1)} aria-label="Previous" className="hidden h-8 w-8 shrink-0 place-items-center rounded-full border border-line bg-white text-ink/60 hover:border-brand hover:text-brand sm:grid">‹</button>
+    <div
+      className="flex items-center gap-3"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {items.length > 1 && (
+        <button onClick={() => setI((p) => (p - 1 + items.length) % items.length)} aria-label="Previous" className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-white/20 text-white/60 hover:border-white/60 hover:text-white">‹</button>
+      )}
 
-      <div
-        ref={track}
-        className="flex flex-1 snap-x gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {items.map((n) => {
-          const inner = (
-            <div className="flex h-14 w-[300px] shrink-0 snap-start items-center gap-3 rounded-full border border-line bg-white pr-4 shadow-soft transition hover:border-brand/40 hover:shadow-lift">
-              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-ink to-[#2a2740]">
-                {n.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={n.imageUrl} alt="" className="h-full w-full object-cover" />
-                )}
-              </div>
-              <p className="line-clamp-2 text-sm font-semibold leading-snug text-ink">{n.title}</p>
-            </div>
-          );
-          return n.linkUrl ? (
-            n.linkUrl.startsWith("http") ? (
-              <a key={n.id} href={n.linkUrl} target="_blank" rel="noreferrer">{inner}</a>
-            ) : (
-              <Link key={n.id} href={n.linkUrl}>{inner}</Link>
-            )
-          ) : (
-            <div key={n.id}>{inner}</div>
-          );
-        })}
-      </div>
+      <div className="min-w-0 flex-1 overflow-hidden">{item}</div>
 
-      <button onClick={() => scrollBy(1)} aria-label="Next" className="hidden h-8 w-8 shrink-0 place-items-center rounded-full border border-line bg-white text-ink/60 hover:border-brand hover:text-brand sm:grid">›</button>
+      {items.length > 1 && (
+        <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
+          {items.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setI(idx)}
+              aria-label={`Go to news ${idx + 1}`}
+              className={`h-1.5 rounded-full transition-all ${idx === i ? "w-4 bg-white" : "w-1.5 bg-white/30"}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {items.length > 1 && (
+        <button onClick={() => setI((p) => (p + 1) % items.length)} aria-label="Next" className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-white/20 text-white/60 hover:border-white/60 hover:text-white">›</button>
+      )}
     </div>
   );
 }

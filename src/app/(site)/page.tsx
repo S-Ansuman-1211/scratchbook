@@ -24,13 +24,13 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Compact news strip - directly below the navbar (only when admin has published news) */}
+      {/* Auto-sliding news ticker on a black bar (only when admin has published news) */}
       {news.length > 0 && (
-        <section className="border-b border-line bg-cream py-3">
+        <section className="bg-ink py-2.5">
           <div className="container-x flex items-center gap-4">
             <span className="hidden shrink-0 items-center gap-2 sm:flex">
               <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">News</span>
-              <Link href="/news" className="text-xs font-semibold text-ink/50 hover:text-brand">All →</Link>
+              <Link href="/news" className="text-xs font-semibold text-white/45 hover:text-white">All →</Link>
             </span>
             <div className="min-w-0 flex-1">
               <NewsCarousel items={news.map((n) => ({ id: n.id, title: n.title, summary: n.summary, imageUrl: n.imageUrl, linkUrl: n.linkUrl }))} />
