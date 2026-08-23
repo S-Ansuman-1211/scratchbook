@@ -47,7 +47,9 @@ export default function ServicesPage() {
       </nav>
 
       <div className="mt-14 space-y-16">
-        {SERVICE_GROUPS.map((group, idx) => (
+        {SERVICE_GROUPS.map((group, idx) => {
+          const isSbsp = SBSP_SLUGS.has(group.slug);
+          return (
           <div key={group.slug}>
             {/* Parent heading before the first SBSP special service */}
             {SBSP_SLUGS.has(group.slug) && !SBSP_SLUGS.has(SERVICE_GROUPS[idx - 1]?.slug) && (
@@ -58,16 +60,22 @@ export default function ServicesPage() {
               </div>
             )}
           <section id={group.slug} className="scroll-mt-24">
-            <div className="mb-6 border-l-4 border-brand pl-4">
-              <h2 className="font-serif text-2xl font-bold text-ink">{group.title}</h2>
-              <p className="mt-1 max-w-3xl text-sm text-ink/60">{group.blurb}</p>
-              {group.note && <p className="mt-2 max-w-3xl text-xs italic text-ink/50">{group.note}</p>}
+            <div className="mb-6 flex flex-wrap items-start justify-between gap-4 border-l-4 border-brand pl-4">
+              <div>
+                <h2 className="font-serif text-2xl font-bold text-ink">{group.title}</h2>
+                <p className="mt-1 max-w-3xl text-sm text-ink/60">{group.blurb}</p>
+                {group.note && <p className="mt-2 max-w-3xl text-xs italic text-ink/50">{group.note}</p>}
+              </div>
+              {isSbsp && <ServiceEnquiry serviceName={group.title} inline />}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {group.items.map((item) => {
-                // Compact card = no description, no price, no tiers: heading + inline enquire button.
-                const compact = !item.description && item.price == null && !item.tiers;
+                const hasPricing = item.price != null || !!item.tiers;
+                // SBSP items don't get a per-item button (the section heading has one).
+                const showEnquire = !isSbsp && !hasPricing;
+                // Compact card = name + inline enquire button (only where a button shows and no description).
+                const compact = showEnquire && !item.description;
                 if (compact) {
                   return (
                     <div key={item.name} className="card flex items-center justify-between gap-3">
@@ -96,9 +104,9 @@ export default function ServicesPage() {
                           </li>
                         ))}
                       </ul>
-                    ) : (
+                    ) : showEnquire ? (
                       <ServiceEnquiry serviceName={item.name} />
-                    )}
+                    ) : null}
 
                     {item.note && <p className="mt-2 text-xs italic text-ink/50">{item.note}</p>}
                   </div>
@@ -107,7 +115,8 @@ export default function ServicesPage() {
             </div>
           </section>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
