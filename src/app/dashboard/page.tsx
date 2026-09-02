@@ -63,22 +63,23 @@ export default async function DashboardOverview() {
                 <tr>
                   <th className="px-4 py-3">Book Name</th>
                   <th className="px-4 py-3">Published</th>
-                  <th className="px-4 py-3">Paperback Sales</th>
-                  <th className="px-4 py-3">Hardcase Sales</th>
+                  <th className="px-4 py-3">Copies Sold</th>
+                  <th className="px-4 py-3">Royalty</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody>
                 {profile.books.map((b) => {
-                  const paperback = b.sales.reduce((s, r) => s + r.copiesSold, 0);
+                  const copies = b.sales.reduce((s, r) => s + r.copiesSold, 0);
+                  const royalty = b.sales.reduce((s, r) => s + r.profitEarned, 0);
                   return (
                     <tr key={b.id} className="border-t border-black/5">
                       <td className="px-4 py-3 font-medium">{b.title}</td>
                       <td className="px-4 py-3 text-ink/60">
                         {b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-IN") : "-"}
                       </td>
-                      <td className="px-4 py-3">{paperback}</td>
-                      <td className="px-4 py-3">-</td>
+                      <td className="px-4 py-3">{copies}</td>
+                      <td className="px-4 py-3">{formatINR(royalty)}</td>
                       <td className="px-4 py-3">
                         <Link href={`/dashboard/books/${b.id}`} className="text-brand hover:underline">
                           View &amp; Manage
