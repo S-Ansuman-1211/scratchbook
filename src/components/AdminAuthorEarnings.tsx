@@ -3,8 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-type BookRow = { id: string; title: string; copiesSold: number; royaltyRupees: number };
+const CHANNELS = [
+  { key: "DIRECT", label: "Direct (Author copies)" },
+  { key: "AMAZON", label: "Amazon" },
+  { key: "BOOKSTORE", label: "Book Store" },
+  { key: "EBOOK_STORE", label: "Online E-Book Store" },
+] as const;
+
+type ChannelKey = (typeof CHANNELS)[number]["key"];
+type ChannelFig = { copiesSold: number; royaltyRupees: number };
+type BookRow = { id: string; title: string; byChannel: Partial<Record<ChannelKey, ChannelFig>> };
 type Available = { id: string; title: string };
+
+const emptyChannels = (src?: Partial<Record<ChannelKey, ChannelFig>>) =>
+  Object.fromEntries(
+    CHANNELS.map((c) => [c.key, { copiesSold: src?.[c.key]?.copiesSold ?? 0, royaltyRupees: src?.[c.key]?.royaltyRupees ?? 0 }])
+  ) as Record<ChannelKey, ChannelFig>;
 
 export default function AdminAuthorEarnings({
   profileId,
@@ -26,19 +40,19 @@ export default function AdminAuthorEarnings({
   const router = useRouter();
   const [earnings, setEarnings] = useState(String(totalEarningsRupees));
   const [wallet, setWallet] = useState(String(walletBalanceRupees));
-  const [rows, setRows] = useState<BookRow[]>(linkedBooks);
+  const [rows, setRows] = useState(linkedBooks.map((b) => ({ id: b.id, title: b.title, channels: emptyChannels(b.byChannel) })));
   const [available, setAvailable] = useState<Available[]>(availableBooks);
   const [addId, setAddId] = useState("");
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
 
-  function setRow(id: string, patch: Partial<BookRow>) {
-    setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  function setCell(bookId: string, ch: ChannelKey, patch: Partial<ChannelFig>) {
+    setRows((rs) => rs.map((r) => (r.id === bookId ? { ...r, channels: { ...r.channels, [ch]: { ...r.channels[ch], ...patch } } } : r)));
   }
 
   function addBook() {
     const b = available.find((a) => a.id === addId);
     if (!b) return;
-    setRows((rs) => [...rs, { id: b.id, title: b.title, copiesSold: 0, royaltyRupees: 0 }]);
+    setRows((rs) => [...rs, { id: b.id, title: b.title, channels: emptyChannels() }]);
     setAvailable((av) => av.filter((a) => a.id !== b.id));
     setAddId("");
   }
@@ -60,8 +74,11 @@ export default function AdminAuthorEarnings({
         walletBalanceRupees: Number(wallet) || 0,
         books: rows.map((r) => ({
           bookId: r.id,
-          copiesSold: Math.max(0, Math.round(Number(r.copiesSold) || 0)),
-          royaltyRupees: Math.max(0, Number(r.royaltyRupees) || 0),
+          sales: CHANNELS.map((c) => ({
+            channel: c.key,
+            copiesSold: Math.max(0, Math.round(Number(r.channels[c.key].copiesSold) || 0)),
+            royaltyRupees: Math.max(0, Number(r.channels[c.key].royaltyRupees) || 0),
+          })),
         })),
       }),
     });
@@ -76,11 +93,9 @@ export default function AdminAuthorEarnings({
 
   return (
     <div className="card space-y-5">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="font-serif text-lg font-bold text-ink">{authorName}</h3>
-          {authorEmail && <p className="text-xs text-ink/50">{authorEmail}</p>}
-        </div>
+      <div>
+        <h3 className="font-serif text-lg font-bold text-ink">{authorName}</h3>
+        {authorEmail && <p className="text-xs text-ink/50">{authorEmail}</p>}
       </div>
 
       {/* Author-level figures */}
@@ -95,51 +110,57 @@ export default function AdminAuthorEarnings({
         </div>
       </div>
 
-      {/* Per-book figures */}
+      {/* Per-book, per-channel figures */}
       <div>
-        <p className="label">Books &amp; sales</p>
+        <p className="label">Books &amp; sales (by channel)</p>
         {rows.length === 0 ? (
           <p className="rounded-lg border border-dashed border-line px-3 py-4 text-center text-sm text-ink/45">
             No books linked to this author yet. Add one below.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-line">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-cream text-xs uppercase text-ink/55">
-                <tr>
-                  <th className="px-3 py-2">Book</th>
-                  <th className="px-3 py-2 w-32">Copies sold</th>
-                  <th className="px-3 py-2 w-36">Royalty (₹)</th>
-                  <th className="px-3 py-2 w-16"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.id} className="border-t border-line">
-                    <td className="px-3 py-2 font-medium">{r.title}</td>
-                    <td className="px-3 py-2">
-                      <input
-                        className="input py-1.5"
-                        inputMode="numeric"
-                        value={r.copiesSold}
-                        onChange={(e) => setRow(r.id, { copiesSold: Number(e.target.value.replace(/\D/g, "")) || 0 })}
-                      />
-                    </td>
-                    <td className="px-3 py-2">
-                      <input
-                        className="input py-1.5"
-                        inputMode="decimal"
-                        value={r.royaltyRupees}
-                        onChange={(e) => setRow(r.id, { royaltyRupees: Number(e.target.value) || 0 })}
-                      />
-                    </td>
-                    <td className="px-3 py-2">
-                      <button onClick={() => removeBook(r.id)} className="text-xs text-red-500 hover:underline">Unlink</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="space-y-4">
+            {rows.map((r) => (
+              <div key={r.id} className="rounded-lg border border-line">
+                <div className="flex items-center justify-between border-b border-line bg-cream px-3 py-2">
+                  <span className="text-sm font-semibold text-ink">{r.title}</span>
+                  <button onClick={() => removeBook(r.id)} className="text-xs text-red-500 hover:underline">Unlink</button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead className="text-xs uppercase text-ink/55">
+                      <tr>
+                        <th className="px-3 py-2">Channel</th>
+                        <th className="px-3 py-2 w-32">Copies sold</th>
+                        <th className="px-3 py-2 w-36">Royalty (₹)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {CHANNELS.map((c) => (
+                        <tr key={c.key} className="border-t border-line">
+                          <td className="px-3 py-2 text-ink/70">{c.label}</td>
+                          <td className="px-3 py-2">
+                            <input
+                              className="input py-1.5"
+                              inputMode="numeric"
+                              value={r.channels[c.key].copiesSold}
+                              onChange={(e) => setCell(r.id, c.key, { copiesSold: Number(e.target.value.replace(/\D/g, "")) || 0 })}
+                            />
+                          </td>
+                          <td className="px-3 py-2">
+                            <input
+                              className="input py-1.5"
+                              inputMode="decimal"
+                              value={r.channels[c.key].royaltyRupees}
+                              onChange={(e) => setCell(r.id, c.key, { royaltyRupees: Number(e.target.value) || 0 })}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 

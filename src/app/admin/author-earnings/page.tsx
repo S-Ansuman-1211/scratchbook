@@ -35,9 +35,14 @@ export default async function AdminAuthorEarningsPage() {
         <div className="mt-6 space-y-6">
           {profiles.map((p) => {
             const linkedBooks = p.books.map((b) => {
-              const copiesSold = b.sales.reduce((s, r) => s + r.copiesSold, 0);
-              const royalty = b.sales.reduce((s, r) => s + r.profitEarned, 0);
-              return { id: b.id, title: b.title, copiesSold, royaltyRupees: royalty / 100 };
+              // Collapse this book's records into a figure per channel.
+              const byChannel: Record<string, { copiesSold: number; royaltyRupees: number }> = {};
+              for (const r of b.sales) {
+                byChannel[r.channel] ??= { copiesSold: 0, royaltyRupees: 0 };
+                byChannel[r.channel].copiesSold += r.copiesSold;
+                byChannel[r.channel].royaltyRupees += r.profitEarned / 100;
+              }
+              return { id: b.id, title: b.title, byChannel };
             });
             // Books available to add: not linked to any author yet.
             const availableBooks = books
